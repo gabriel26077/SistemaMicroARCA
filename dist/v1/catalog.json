@@ -8,6 +8,31 @@
         ],
         "micropython": ">=1.24"
       },
+      "dependencies": [],
+      "description": "Funções simples de saudação, soma, dobro, paridade e contagem para testar o catálogo e a instalação na IDE.",
+      "files": [
+        {
+          "name": "lib_microarca_teste.py",
+          "sha256": "5c7150d5d54f811ac8f8cb63836112748e4bfb72de4be808744e355df741c7d9",
+          "size": 622,
+          "url": "packages/microarca-teste/1.0.0/lib_microarca_teste.py"
+        }
+      ],
+      "homepage": "",
+      "id": "microarca-teste",
+      "license": "MIT",
+      "license_url": "packages/microarca-teste/1.0.0/LICENSE",
+      "name": "MicroARCA Teste",
+      "version": "1.0.0"
+    },
+    {
+      "author": "Projeto ARCA",
+      "compatibility": {
+        "boards": [
+          "ESP32_GENERIC"
+        ],
+        "micropython": ">=1.24"
+      },
       "dependencies": [
         {
           "id": "ssd1306",

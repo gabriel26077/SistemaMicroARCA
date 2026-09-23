@@ -66,12 +66,17 @@ Metadados permitidos: `manifest.json`, `LICENSE`, `README`, `README.md`, `README
 chaves JSON repetidas são rejeitados. O validador implementa os recursos de JSON
 Schema usados neste projeto e verificações semânticas adicionais.
 
-## Pacotes iniciais
+## Pacotes
 
 | Pacote | Versão do catálogo | Origem | Licença |
 | --- | --- | --- | --- |
 | oled-pintor | 1.0.0 | Cópia local exata do ProjetoARCA | MIT |
 | ssd1306 | 1.0.0 | MicroPython/micropython-lib, upstream 0.1.0 | MIT |
+| microarca-teste | 1.0.0 | Funções simples do Projeto ARCA para testar a IDE | MIT |
+
+`microarca-teste` não tem dependências nem acesso a hardware. Instala
+`lib_microarca_teste.py`, com `ola`, `somar`, `dobrar`, `eh_par` e `contar_ate`.
+[Exemplos de uso](packages/microarca-teste/1.0.0/README.md).
 
 `oled-pintor` depende de `ssd1306==1.0.0`. `math`, `machine`, `micropython`,
 `framebuf` e `time` vêm do firmware. A compatibilidade declarada visa MicroPython >=1.24 e

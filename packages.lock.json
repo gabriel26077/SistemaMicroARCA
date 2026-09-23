@@ -1,6 +1,12 @@
 {
   "schema": 1,
   "versions": {
+    "microarca-teste/1.0.0": {
+      "LICENSE": "574ffc4c46eb303a9ba66e2104992e4e7b18ba6756a80b99e8e9a2ebcc267f27",
+      "README.md": "54159e1faccfe570d7baae8801354ebb2e48f13da55b97c157f5920a06acd8ed",
+      "lib_microarca_teste.py": "5c7150d5d54f811ac8f8cb63836112748e4bfb72de4be808744e355df741c7d9",
+      "manifest.json": "ae2eea04ec7a481bcb9c387192a6bc93523e708d508771fa3554480a7f4ac553"
+    },
     "oled-pintor/1.0.0": {
       "LICENSE": "574ffc4c46eb303a9ba66e2104992e4e7b18ba6756a80b99e8e9a2ebcc267f27",
       "README.md": "5e3e38559e6f98a5c1f6a2cd0a59168cbbe8f9991e6827110633fe6d057caee4",

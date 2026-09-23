@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "id": "microarca-teste",
+  "name": "MicroARCA Teste",
+  "version": "1.0.0",
+  "description": "Funções simples de saudação, soma, dobro, paridade e contagem para testar o catálogo e a instalação na IDE.",
+  "author": "Projeto ARCA",
+  "license": "MIT",
+  "homepage": "",
+  "origin": "first-party",
+  "compatibility": {
+    "micropython": ">=1.24",
+    "boards": ["ESP32_GENERIC"]
+  },
+  "dependencies": [],
+  "files": [
+    {
+      "source": "lib_microarca_teste.py",
+      "install_as": "lib_microarca_teste.py"
+    }
+  ]
+}
