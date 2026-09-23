@@ -1,34 +1,45 @@
 # Operação do catálogo estático
 
-**Estado atual: publicação bloqueada por DNS ausente.** Nenhuma mudança foi feita
-na VPS. O snippet `Caddyfile.microarca` é preparação local, não configuração ativa.
+**Endpoint atual: `libs-microarca.traceedu.com.br`, via Cloudflare.** O usuário
+criou um CNAME para `traceedu.com.br`. O snippet `Caddyfile.microarca` é preparação
+local; a configuração de Caddy/Compose ainda aguarda confirmação.
 O provisionamento exige uma única confirmação após diff exato e backups, conforme
 `IA_SPEC.md`. Deploy de arquivos e provisionamento de infraestrutura são separados.
 
 ## DNS
 
-Inspeção em 2026-09-23 01:13 UTC (22/09, 22:13 em São Paulo): consultas A e AAAA
-sem resposta para `libs.microarca.traceedu.com.br`. A VPS informa IPv4 público
-`2.25.196.49` e IPv6 `2a02:4780:75:e43::1`.
+O hostname foi alterado pelo usuário para usar um único nível de subdomínio,
+coberto pelo Universal SSL da Cloudflare. Configuração informada na zona
+`traceedu.com.br`:
 
-Criar no provedor DNS da zona `traceedu.com.br`:
-
-| Tipo | Nome | Valor | TTL sugerido |
+| Tipo | Nome | Valor | TTL |
 | --- | --- | --- | --- |
-| A | libs.microarca | 2.25.196.49 | 300 |
+| CNAME | libs-microarca | traceedu.com.br | Automático |
 
-Não é necessário criar AAAA. Só o criar se o IPv6 da VPS estiver validado para
-HTTPS; qualquer A/AAAA errado pode provocar falha de certificado. Não alterar
-registros dos hosts existentes. O agente não modifica o provedor DNS.
+Inspeção em 2026-09-23 02:24 UTC: o novo nome e `traceedu.com.br` resolvem para
+`104.21.74.162`, `172.67.204.66` e IPv6 da Cloudflare, indicando proxy ativo.
+O IPv4 da VPS continua `2.25.196.49`; não deve ser confundido com os IPs do proxy.
+A resposta pública inicial foi HTTP 525 (TLS da origem ainda não estabelecido
+para o novo host). Não alterar DNS ou configurações dos hosts existentes.
 
 ```bash
-ssh vps 'dig +short libs.microarca.traceedu.com.br A'
-ssh vps 'dig +short libs.microarca.traceedu.com.br AAAA'
-bash scripts/deploy.sh --dry-run
+ssh vps 'dig +short libs-microarca.traceedu.com.br A'
+ssh vps 'dig +short libs-microarca.traceedu.com.br AAAA'
+bash scripts/deploy.sh --dry-run --cloudflare
 ```
 
-Sem DNS correto, não aplicar o host ao Caddy, não solicitar certificado e não
-iniciar publicação incompleta.
+O modo padrão de deploy continua exigindo DNS direto para a VPS. Para o CNAME
+aprovado, usar `--cloudflare`: exige que o nome resolva para os mesmos endereços
+de `traceedu.com.br`, todos dentro das redes oficiais publicadas pela Cloudflare
+via HTTPS. Isso valida o proxy, mas não comprova a configuração de origem.
+Depois da ativação, a verificação HTTPS deve comprovar o catálogo e os bytes
+exatos dos arquivos. Não aceitar DNS ausente, IPs inesperados ou ignorar falhas.
+
+Usar SSL/TLS Full (strict) na Cloudflare para HTTPS também até a origem; não
+alterar o modo da zona inteira sem avaliar o impacto nos hosts TraceEdu. Caddy
+obtém o certificado público do novo hostname por ACME. Se houver regras de WAF
+ou redirects interferindo no desafio HTTP, diagnosticar sem desligar proteções
+da zona inteira. O catálogo precisa chegar ao app com `Cache-Control: no-cache`.
 
 ## Preparação antes da confirmação
 
@@ -72,12 +83,18 @@ Mostrar o diff exato e caminhos dos backups; pedir **uma confirmação** para ap
 essas alterações e recriar somente Caddy. Não pedir confirmação genérica antes
 de preparar o resultado revisável. Se arquivos mudaram, recalcular o diff.
 
+Preparação executada em 23/09/2026: backups com sufixo
+`.bak-microarca-20260923T023344651705Z` nos dois arquivos. Hashes de originais,
+backups e propostas estão em [approval-evidence.json](approval-evidence.json).
+A configuração completa proposta passou por `caddy validate` via stdin, sem
+carregar os servidores. Arquivos ativos permanecem intactos, aguardando confirmação.
+
 ## Após autorização e DNS correto
 
 1. Criar apenas `/var/www/MicroARCA-libs` e seus subdiretórios `releases/`, com
    permissões de leitura para Caddy. Não alterar donos/permissões do TraceEdu.
 2. Preparar o primeiro release completo antes de habilitar o host usando
-   `bash scripts/deploy.sh --bootstrap`. Esse modo exige DNS correto, testes,
+   `bash scripts/deploy.sh --bootstrap --cloudflare`. Esse modo exige DNS correto, testes,
    integridade e árvore limpa como o deploy normal, mas adia a verificação HTTPS
    até o Caddy estar configurado. Não usar como substituto do deploy normal.
 3. Aplicar os dois diffs aprovados. Validar o Caddyfile **completo** antes de reload

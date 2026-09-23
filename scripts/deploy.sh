@@ -4,13 +4,15 @@ cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
 
 dry_run=false
 bootstrap=false
-case "${1:-}" in
-  --dry-run) dry_run=true ;;
-  --bootstrap) bootstrap=true ;;
-  '') ;;
-  *) echo 'Uso: scripts/deploy.sh [--dry-run|--bootstrap]' >&2; exit 2 ;;
-esac
-[[ $# -le 1 ]] || { echo 'Argumentos inesperados.' >&2; exit 2; }
+dns_args=()
+for arg in "$@"; do
+  case "$arg" in
+    --dry-run) dry_run=true ;;
+    --bootstrap) bootstrap=true ;;
+    --cloudflare) dns_args=(--cloudflare) ;;
+    *) echo 'Uso: scripts/deploy.sh [--dry-run] [--bootstrap] [--cloudflare]' >&2; exit 2 ;;
+  esac
+done
 
 clean_tree() {
   [[ -z "$(git status --porcelain --untracked-files=all)" ]] || {
@@ -36,20 +38,14 @@ if "$dry_run"; then
   echo "Preparar $incoming em vps; transferir dist/ usando rsync por SSH."
   echo "Verificar SHA-256 $digest e imutabilidade contra releases anteriores."
   echo "Publicar releases/$commit e trocar current atomicamente; preservar releases."
+  echo "Validação DNS selecionada: ${dns_args[*]:-direta}; será executada somente no deploy real."
   exit 0
 fi
 
 # Infrastructure provisioning is deliberately separate; this only publishes files.
-# Require the intended hostname to resolve to an address configured on the VPS.
+# Cloudflare requires an explicit flag; the default still requires direct DNS.
 remote_ips=$(ssh -o BatchMode=yes -o ConnectTimeout=10 vps hostname -I)
-python3 - "$remote_ips" <<'PY'
-import ipaddress, socket, sys
-domain = 'libs.microarca.traceedu.com.br'
-expected = {ipaddress.ip_address(s) for s in sys.argv[1].split()}
-actual = {ipaddress.ip_address(s[4][0]) for s in socket.getaddrinfo(domain, 443, type=socket.SOCK_STREAM)}
-if not actual or not actual <= expected:
-    sys.exit(f'ERRO: DNS de {domain} não aponta exclusivamente para esta VPS: {actual}')
-PY
+python3 scripts/check_dns.py --origin-ips "$remote_ips" "${dns_args[@]}"
 remote() {
   ssh -o BatchMode=yes -o ConnectTimeout=10 vps \
     python3 - "$1" "$commit" "$token" "$digest" < scripts/remote_release.py

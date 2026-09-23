@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://libs.microarca.traceedu.com.br/schemas/catalog.schema.json",
+  "$id": "https://libs-microarca.traceedu.com.br/schemas/catalog.schema.json",
   "type": "object",
   "properties": {
     "schema": {

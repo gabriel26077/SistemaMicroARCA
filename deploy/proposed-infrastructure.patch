@@ -15,7 +15,7 @@
      }
  }
 +
-+libs.microarca.traceedu.com.br {
++libs-microarca.traceedu.com.br {
 +    root * /srv/microarca-libs/current
 +
 +    @catalog path /v1/catalog.json

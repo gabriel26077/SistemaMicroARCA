@@ -34,10 +34,12 @@ maliciosa dos próprios validadores ou reescrita de histórico.
 
 ## Implantação
 
-Execute `bash scripts/deploy.sh --dry-run` com árvore limpa: valida antes/depois
+Execute `bash scripts/deploy.sh --dry-run --cloudflare` com árvore limpa: valida antes/depois
 do build, sem conexão remota. Na implantação real:
 
-1. Exige que todos os IPs resolvidos do domínio pertençam à VPS.
+1. No modo direto, exige IPs da VPS. Com `--cloudflare`, exige que os IPs do domínio
+   sejam iguais aos de `traceedu.com.br` e pertençam às redes oficiais Cloudflare.
+   O proxy não revela sua origem por DNS: comprovar HTTPS e conteúdo após ativação.
 2. Reserva `.deploy-lock` exclusivo e `.incoming-<commit>-<token>`.
 3. Transfere via rsync/SSH sem tocar no release servido.
 4. Confere digest de todos os arquivos e SHA-256/tamanho de cada módulo.
@@ -54,6 +56,6 @@ de remover manualmente. Não automatizar limpeza de releases nesta fase.
 
 `/var/www/MicroARCA-libs/releases` deve existir previamente. Deploy não provisiona
 nem reinicia serviços; primeiro provisionamento exige aprovação em `deploy/README.md`.
-No primeiro provisionamento, `--bootstrap` permite preparar/ativar o release completo
+No primeiro provisionamento, `--bootstrap --cloudflare` permite preparar/ativar o release completo
 antes de habilitar o host Caddy, adiando apenas a checagem pública HTTPS. DNS continua
 obrigatório e a verificação pública deve ser executada após configurar o host.

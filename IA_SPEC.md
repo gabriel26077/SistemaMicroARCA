@@ -1,5 +1,13 @@
 Você está dentro de um novo repositório Git privado destinado ao catálogo oficial de bibliotecas do MicroARCA.
 
+ATUALIZAÇÃO DO USUÁRIO (22/09/2026): o endpoint passa a ser
+`libs-microarca.traceedu.com.br`, com CNAME para `traceedu.com.br` e proxy Cloudflare.
+No modo explícito Cloudflare, a verificação DNS deve validar a cadeia aprovada e
+as redes do proxy; os IPs públicos serão da Cloudflare. A origem será confirmada
+pela verificação HTTPS e dos bytes publicados após ativação. As demais restrições
+de preservação do TraceEdu, backups e confirmação antes de editar Caddy/Compose
+continuam aplicáveis.
+
 Quero que você implemente o sistema completo de catálogo e distribuição de bibliotecas MicroPython descrito abaixo. Trabalhe com autonomia, mas preserve rigorosamente a VPS e o sistema TraceEdu existente.
 
 IMPORTANTE:
@@ -20,7 +28,7 @@ Criar um repositório que funcione como fonte oficial e auditável das bibliotec
 
 O aplicativo Android futuramente consultará:
 
-https://libs.microarca.traceedu.com.br/v1/catalog.json
+https://libs-microarca.traceedu.com.br/v1/catalog.json
 
 O catálogo e os arquivos serão estáticos. Não crie backend, banco de dados, painel administrativo, autenticação ou API dinâmica nesta primeira versão.
 
@@ -385,7 +393,7 @@ Não corrija swap, redes, limites de container ou arquitetura do TraceEdu nesta 
 
 Prepare um snippet semelhante a:
 
-libs.microarca.traceedu.com.br {
+libs-microarca.traceedu.com.br {
     root * /srv/microarca-libs/current
 
     @catalog path /v1/catalog.json
@@ -412,7 +420,7 @@ O domínio exato permite que o Caddy obtenha certificado automaticamente depois 
 
 Antes de publicar, verifique:
 
-dig +short libs.microarca.traceedu.com.br
+dig +short libs-microarca.traceedu.com.br
 
 O registro deve apontar para a VPS.
 
@@ -493,7 +501,7 @@ O README principal deve explicar:
 - Que bibliotecas MicroPython executam código dentro do ESP32.
 - Política inicial: somente bibliotecas revisadas pelo mantenedor.
 
-Crie documentação suficiente para que uma pessoa consiga migrar futuramente de `libs.microarca.traceedu.com.br` para outro domínio mudando apenas o endpoint raiz do aplicativo e a infraestrutura de hospedagem.
+Crie documentação suficiente para que uma pessoa consiga migrar futuramente de `libs-microarca.traceedu.com.br` para outro domínio mudando apenas o endpoint raiz do aplicativo e a infraestrutura de hospedagem.
 
 ## Git
 

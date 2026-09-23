@@ -52,7 +52,7 @@ def verify(endpoint, local=ROOT / 'dist'):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--url', default='https://libs.microarca.traceedu.com.br/v1/catalog.json')
+    parser.add_argument('--url', default='https://libs-microarca.traceedu.com.br/v1/catalog.json')
     args = parser.parse_args()
     try:
         verify(args.url)

@@ -2,7 +2,7 @@
 
 Fonte auditável de bibliotecas MicroPython para ESP32. A distribuição é estática:
 sem backend, banco, autenticação ou execução de Python no servidor web.
-Endpoint previsto: `https://libs.microarca.traceedu.com.br/v1/catalog.json`.
+Endpoint previsto: `https://libs-microarca.traceedu.com.br/v1/catalog.json`.
 Consulte [o estado da implantação](docs/implementation-status.md) antes de usá-lo.
 
 **O repositório é privado; os arquivos publicados são públicos.** Bibliotecas
@@ -84,7 +84,7 @@ Proveniência: [OLED](packages/oled-pintor/1.0.0/README.md) e
 Com working tree limpo e tudo commitado:
 
 ```bash
-bash scripts/deploy.sh --dry-run
+bash scripts/deploy.sh --dry-run --cloudflare
 ```
 
 O dry-run roda testes, validação e build local; não abre SSH nem escreve na VPS.
@@ -93,7 +93,7 @@ diff exato e backups e obtendo a confirmação única exigida antes de alterar
 Compose/Caddy. Depois de DNS, infraestrutura e autorização:
 
 ```bash
-bash scripts/deploy.sh
+bash scripts/deploy.sh --cloudflare
 python3 scripts/verify_public.py
 ```
 
@@ -102,6 +102,11 @@ e imutabilidade, promove para `releases/<commit>` e troca `current` atomicamente
 Releases antigos são mantidos. Não configura DNS, Caddy, Compose ou containers.
 Se HTTPS final falhar, o release permanece para diagnóstico;
 use o [rollback](deploy/rollback.md).
+
+O usuário configurou `libs-microarca` como CNAME para `traceedu.com.br`, com proxy
+Cloudflare. `--cloudflare` valida os IPs públicos contra o destino aprovado e as
+redes oficiais Cloudflare; sem essa opção, exige IP direto da VPS. Em ambos os
+casos a verificação pública de HTTPS/conteúdo é obrigatória após a ativação.
 
 ## Estrutura
 

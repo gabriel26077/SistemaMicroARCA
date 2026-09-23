@@ -1,0 +1,26 @@
+{
+  "timestamp": "20260923T023344651705Z",
+  "files": [
+    {
+      "path": "/var/www/TraceEdu/docker-compose.prod.yml",
+      "backup": "/var/www/TraceEdu/docker-compose.prod.yml.bak-microarca-20260923T023344651705Z",
+      "original_sha256": "6fd7c1d84bda7461046e228c3fdfe18947f8f9afbd6e5469d98a80242a2b46a7",
+      "proposed_sha256": "3dceb8e09ab122e69fa5d4aa25dc30bcde214558bd20606388da30a44725e733"
+    },
+    {
+      "path": "/var/www/TraceEdu/Caddyfile.domains",
+      "backup": "/var/www/TraceEdu/Caddyfile.domains.bak-microarca-20260923T023344651705Z",
+      "original_sha256": "b49892dba0fd0952c064cdfd7bc2e6f7aa03ad1a4822a633395232fae79a8cfd",
+      "proposed_sha256": "e48f9dcb65e9727c154139df59324a20c516c8f5aa75a8bb1ef585c5c8ca2c7d"
+    }
+  ],
+  "read_files_sha256": {
+    "/var/www/TraceEdu/docker-compose.yml": "3a326ab02f71306904eb8789a57f3409a325408c56c2ef9d548dbed100484fb6",
+    "/var/www/TraceEdu/docker-compose.prod.yml": "6fd7c1d84bda7461046e228c3fdfe18947f8f9afbd6e5469d98a80242a2b46a7",
+    "/var/www/TraceEdu/Caddyfile.domains": "b49892dba0fd0952c064cdfd7bc2e6f7aa03ad1a4822a633395232fae79a8cfd",
+    "/var/www/TraceEdu-dev/docker-compose.staging.yml": "cefd752d1b260e64097b17f725ba07d25f832df2ee21756a4f72a62686a669d8"
+  },
+  "validation": "Valid configuration",
+  "status": "awaiting-user-confirmation",
+  "endpoint": "https://libs-microarca.traceedu.com.br/v1/catalog.json"
+}

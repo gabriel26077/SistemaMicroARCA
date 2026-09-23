@@ -1,6 +1,39 @@
-# Relatório da implementação inicial
+# Estado da implementação e publicação
 
 Data: 22/09/2026, São Paulo; inspeção remota em 23/09/2026 01:13 UTC.
+
+## Atualização: novo hostname e confirmação pendente
+
+O usuário alterou o endpoint para
+`https://libs-microarca.traceedu.com.br/v1/catalog.json`, com CNAME para
+`traceedu.com.br`. Scripts, schemas, especificação, snippet e contrato do app
+foram atualizados. O catálogo e os módulos permanecem byte a byte idênticos,
+pois seus URLs são relativos.
+
+Inspeção em 23/09/2026 02:24 UTC: novo hostname e destino do CNAME resolvem para
+os mesmos IPs Cloudflare; HTTPS público responde 525 enquanto o host da origem
+ainda não está configurado. A opção explícita `--cloudflare` valida o DNS contra
+o destino aprovado e as redes da API pública oficial Cloudflare. O modo padrão
+continua exigindo IP direto da VPS. A verificação pública de HTTPS e conteúdo
+continua obrigatória após ativação, pois o DNS do proxy não comprova a origem.
+
+**62 testes passaram** (54 anteriores + 8 de validação DNS/proxy), build `--check`
+e validação DNS real aprovados. Os sete containers mantêm os mesmos StartedAt
+abaixo e os domínios TraceEdu continuam com os mesmos códigos HTTP.
+
+Backups criados, preservando metadados e confirmando SHA-256:
+
+- `/var/www/TraceEdu/docker-compose.prod.yml.bak-microarca-20260923T023344651705Z`
+- `/var/www/TraceEdu/Caddyfile.domains.bak-microarca-20260923T023344651705Z`
+
+A proposta completa passou por `caddy validate` via stdin: `Valid configuration`.
+Os arquivos ativos não foram editados e nenhum container foi reiniciado.
+O [diff exato](../deploy/proposed-infrastructure.patch) e a
+[evidência dos backups/hashes](../deploy/approval-evidence.json) estão preparados.
+Próximo passo: confirmação do usuário para aplicar o diff e recriar somente Caddy.
+
+As seções seguintes registram a implementação inicial e o bloqueio de DNS do
+hostname anterior, agora substituído pelo hostname acima.
 
 ## Resultado
 
@@ -105,14 +138,13 @@ os mesmos StartedAt dos sete containers e os mesmos códigos HTTP dos domínios
 TraceEdu. A publicação na VPS continua bloqueada pelo DNS; nenhuma configuração
 remota foi alterada e nenhum release foi transferido.
 
-A URL prevista ainda não está disponível:
-`https://libs.microarca.traceedu.com.br/v1/catalog.json`.
+A URL atual aguarda configuração da origem e publicação:
+`https://libs-microarca.traceedu.com.br/v1/catalog.json`.
 
-Próximo passo externo: criar o registro DNS indicado. Depois, repetir a inspeção,
-refazer o diff se necessário, fazer backups timestampados e obter a confirmação
-única antes de alterar Caddy/Compose. Publicar o release completo, configurar
-somente Caddy e executar `python3 scripts/verify_public.py`, comparando também os
-domínios TraceEdu e StartedAt. Comandos em [deploy/README.md](../deploy/README.md).
+Após a confirmação pendente, publicar o release completo, aplicar somente os
+diffs aprovados, recriar Caddy e executar `python3 scripts/verify_public.py`,
+comparando os domínios TraceEdu e StartedAt. Procedimento em
+[deploy/README.md](../deploy/README.md).
 
 Limitações restantes: ensaio físico OLED/ESP32, publicação HTTPS condicionada a
 DNS/autorização e futura assinatura Ed25519 com gerenciamento real de chaves.

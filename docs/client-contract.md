@@ -1,6 +1,6 @@
 # Contrato do cliente Android — schema 1
 
-Endpoint: `https://libs.microarca.traceedu.com.br/v1/catalog.json`. Resolver URLs
+Endpoint: `https://libs-microarca.traceedu.com.br/v1/catalog.json`. Resolver URLs
 em relação ao catálogo: `packages/ssd1306/1.0.0/ssd1306.py` fica em `/v1/packages/...`.
 
 ## Rede e cache
