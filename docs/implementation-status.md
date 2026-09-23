@@ -1,10 +1,16 @@
 # Relatório de publicação MicroARCA
 
+**Atualização em 23/09/2026 às 17:10 UTC:** `microarca-teste@1.0.0` publicado,
+release ativo `4f7454ef3afa48f0414d0184379d8a442703af1f`. Foi observado no catálogo
+público 8,307 s após iniciar o deploy, sem reiniciar containers.
+[Resultados e metodologia](catalog-latency-test.md). O restante deste documento
+registra o primeiro provisionamento e suas evidências históricas.
+
 Publicado e verificado em 23/09/2026 às 03:05 UTC (00:05 em São Paulo).
 
 **Endpoint público:** https://libs-microarca.traceedu.com.br/v1/catalog.json
 
-**Release ativo:** `0e4bff12fad2829c2f4ebf8b162e1b43aa8d10f6`.
+**Release do primeiro provisionamento:** `0e4bff12fad2829c2f4ebf8b162e1b43aa8d10f6`.
 GitHub: `gabriel26077/SistemaMicroARCA`, privado, branch `main`.
 
 ## Implementado

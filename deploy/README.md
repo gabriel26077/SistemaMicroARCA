@@ -2,8 +2,9 @@
 
 **Publicado: `https://libs-microarca.traceedu.com.br/v1/catalog.json`, via Cloudflare.**
 O usuário criou um CNAME para `traceedu.com.br` e aprovou o diff de Caddy/Compose.
-Release atual: `0e4bff12fad2829c2f4ebf8b162e1b43aa8d10f6`. Somente Caddy foi
-recriado; os seis containers de aplicação/banco mantiveram seus IDs e StartedAt.
+Release atual: `4f7454ef3afa48f0414d0184379d8a442703af1f`, incluindo `microarca-teste`.
+O primeiro provisionamento recriou somente Caddy; a publicação seguinte manteve
+os sete containers sem reinícios. [Medição de publicação](../docs/catalog-latency-test.md).
 O provisionamento inicial recebeu a confirmação exigida após diff exato e backups.
 Deploy normal de arquivos não altera infraestrutura. As instruções abaixo também
 servem para uma futura reinstalação; não reaplicar o diff sobre a configuração ativa.

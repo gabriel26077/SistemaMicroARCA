@@ -1,0 +1,46 @@
+{
+  "commit": "4f7454ef3afa48f0414d0184379d8a442703af1f",
+  "deploy_started_at": "2026-09-23T17:10:11.347733+00:00",
+  "old_etag": "\"dlmagxjzeo5y1a6\"",
+  "poll_interval_seconds": 1,
+  "observations": [
+    {
+      "seconds": 0.688,
+      "http": 304
+    },
+    {
+      "seconds": 1.983,
+      "http": 304
+    },
+    {
+      "seconds": 3.663,
+      "http": 304
+    },
+    {
+      "seconds": 5.328,
+      "http": 304
+    },
+    {
+      "seconds": 7.013,
+      "http": 304
+    },
+    {
+      "seconds": 8.307,
+      "http": 200,
+      "found": true
+    }
+  ],
+  "activation_message_seconds": 7.091,
+  "first_seen_seconds": 8.307,
+  "first_seen_at": "2026-09-23T17:10:19.654482+00:00",
+  "new_etag": "\"dlmuzosvw5s71wj\"",
+  "cache_control": "no-cache",
+  "packages": [
+    "microarca-teste",
+    "oled-pintor",
+    "ssd1306"
+  ],
+  "deploy_exit_code": 0,
+  "deploy_completed_seconds": 10.367,
+  "all_containers_unchanged": true
+}

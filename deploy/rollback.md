@@ -2,10 +2,11 @@
 
 ## Somente catálogo
 
-Na publicação inicial existe apenas o release `0e4bff12fad2829c2f4ebf8b162e1b43aa8d10f6`;
-ainda não há release de produção anterior. O fluxo de troca para um release anterior
-foi testado em diretório local temporário. Para desfazer a primeira instalação,
-usar a restauração de infraestrutura descrita adiante, preservando os arquivos.
+Release atual: `4f7454ef3afa48f0414d0184379d8a442703af1f`.
+Release anterior preservado: `0e4bff12fad2829c2f4ebf8b162e1b43aa8d10f6`.
+Voltar ao anterior remove `microarca-teste` do catálogo servido, mantendo OLED e
+SSD1306. O fluxo de troca foi testado em diretório local temporário. Para desfazer
+toda a instalação, usar a restauração de infraestrutura adiante e preservar arquivos.
 
 Escolher o commit anterior entre os diretórios de release, conferir catálogo e
 integridade e garantir que não há deploy concorrente (`.deploy-lock`). Criar o
