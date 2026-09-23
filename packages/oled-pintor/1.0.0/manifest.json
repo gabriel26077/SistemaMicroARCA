@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "id": "oled-pintor",
+  "name": "Pintor OLED",
+  "version": "1.0.0",
+  "description": "Funções educacionais para desenhar em displays OLED.",
+  "author": "Projeto ARCA",
+  "license": "MIT",
+  "homepage": "",
+  "origin": "first-party",
+  "compatibility": {
+    "micropython": ">=1.24",
+    "boards": [
+      "ESP32_GENERIC"
+    ]
+  },
+  "dependencies": [
+    {
+      "id": "ssd1306",
+      "version": "1.0.0"
+    }
+  ],
+  "files": [
+    {
+      "source": "lib_oled_pintor.py",
+      "install_as": "lib_oled_pintor.py"
+    }
+  ]
+}

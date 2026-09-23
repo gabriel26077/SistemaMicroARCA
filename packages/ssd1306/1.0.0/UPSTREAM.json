@@ -1,0 +1,8 @@
+{
+  "repository": "https://github.com/micropython/micropython-lib",
+  "commit": "4fa59bd6a5916783e8503e9f2339627c8cffa5bf",
+  "version": "0.1.0",
+  "source_url": "https://github.com/micropython/micropython-lib/blob/4fa59bd6a5916783e8503e9f2339627c8cffa5bf/micropython/drivers/display/ssd1306/ssd1306.py",
+  "license_url": "https://github.com/micropython/micropython-lib/blob/4fa59bd6a5916783e8503e9f2339627c8cffa5bf/LICENSE",
+  "license": "MIT"
+}

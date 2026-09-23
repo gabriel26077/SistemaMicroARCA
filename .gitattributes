@@ -1,0 +1,2 @@
+packages/**/*.py -text whitespace=cr-at-eol
+dist/** -text whitespace=cr-at-eol

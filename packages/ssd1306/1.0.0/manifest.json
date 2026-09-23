@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "id": "ssd1306",
+  "name": "SSD1306",
+  "version": "1.0.0",
+  "description": "Driver oficial MicroPython SSD1306 para interfaces I2C e SPI.",
+  "author": "MicroPython contributors",
+  "license": "MIT",
+  "homepage": "https://github.com/micropython/micropython-lib",
+  "origin": "third-party",
+  "compatibility": {
+    "micropython": ">=1.24",
+    "boards": [
+      "ESP32_GENERIC"
+    ]
+  },
+  "dependencies": [],
+  "files": [
+    {
+      "source": "ssd1306.py",
+      "install_as": "ssd1306.py"
+    }
+  ]
+}

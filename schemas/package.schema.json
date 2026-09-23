@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://libs.microarca.traceedu.com.br/schemas/package.schema.json",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "type": "integer",
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 64
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+      "maxLength": 32
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "author": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "license": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "homepage": {
+      "type": "string",
+      "maxLength": 2048
+    },
+    "compatibility": {
+      "type": "object",
+      "properties": {
+        "micropython": {
+          "type": "string",
+          "pattern": "^>=1\\.[0-9]+(?:\\.[0-9]+)?$"
+        },
+        "boards": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z0-9_]+$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "micropython",
+        "boards"
+      ],
+      "additionalProperties": false
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "maxLength": 64
+          },
+          "version": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$",
+            "maxLength": 32
+          }
+        },
+        "required": [
+          "id",
+          "version"
+        ],
+        "additionalProperties": false
+      },
+      "uniqueItems": true
+    },
+    "origin": {
+      "type": "string",
+      "enum": [
+        "first-party",
+        "third-party"
+      ]
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "pattern": "^[A-Za-z_][A-Za-z_0-9]*\\.py$",
+            "maxLength": 128
+          },
+          "install_as": {
+            "type": "string",
+            "pattern": "^[A-Za-z_][A-Za-z_0-9]*\\.py$",
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "source",
+          "install_as"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "name",
+    "version",
+    "description",
+    "author",
+    "license",
+    "homepage",
+    "compatibility",
+    "dependencies",
+    "origin",
+    "files"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "upstream": {
+      "type": "object",
+      "properties": {
+        "repository": {
+          "type": "string",
+          "pattern": "^https://[^\\s]+$"
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_url": {
+          "type": "string",
+          "pattern": "^https://[^\\s]+$"
+        },
+        "license_url": {
+          "type": "string",
+          "pattern": "^https://[^\\s]+$"
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "repository",
+        "commit",
+        "version",
+        "source_url",
+        "license_url",
+        "license"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
