@@ -1,0 +1,33 @@
+name: Validate static registry
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test and validate immutable versions
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PUSH_BASE: ${{ github.event.before }}
+        run: |
+          set -Eeuo pipefail
+          base=HEAD
+          if [[ "$EVENT_NAME" == pull_request ]]; then
+            base="$PR_BASE"
+          elif [[ "$EVENT_NAME" == push && -n "$PUSH_BASE" && ! "$PUSH_BASE" =~ ^0+$ ]]; then
+            base="$PUSH_BASE"
+          fi
+          python3 -m unittest discover -s tests -v
+          python3 scripts/validate_catalog.py --baseline-ref "$base"
+          python3 scripts/build_catalog.py --check --baseline-ref "$base"
+          bash -n scripts/deploy.sh
+          git diff --check
+          test -z "$(git status --porcelain --untracked-files=all)"
