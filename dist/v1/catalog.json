@@ -1,0 +1,61 @@
+{
+  "packages": [
+    {
+      "author": "Projeto ARCA",
+      "compatibility": {
+        "boards": [
+          "ESP32_GENERIC"
+        ],
+        "micropython": ">=1.24"
+      },
+      "dependencies": [
+        {
+          "id": "ssd1306",
+          "version": "1.0.0"
+        }
+      ],
+      "description": "Funções educacionais para desenhar em displays OLED.",
+      "files": [
+        {
+          "name": "lib_oled_pintor.py",
+          "sha256": "82623d73823719c5fa7a2afcc956eacc44de9aaefb2b8896d64d4c3d1dcb1d90",
+          "size": 2916,
+          "url": "packages/oled-pintor/1.0.0/lib_oled_pintor.py"
+        }
+      ],
+      "homepage": "",
+      "id": "oled-pintor",
+      "license": "MIT",
+      "license_url": "packages/oled-pintor/1.0.0/LICENSE",
+      "name": "Pintor OLED",
+      "version": "1.0.0"
+    },
+    {
+      "author": "MicroPython contributors",
+      "compatibility": {
+        "boards": [
+          "ESP32_GENERIC"
+        ],
+        "micropython": ">=1.24"
+      },
+      "dependencies": [],
+      "description": "Driver oficial MicroPython SSD1306 para interfaces I2C e SPI.",
+      "files": [
+        {
+          "name": "ssd1306.py",
+          "sha256": "b9f5331c75297774bced61bdfd12c37d4363336d064d7cf58967c88d807efbe5",
+          "size": 4922,
+          "url": "packages/ssd1306/1.0.0/ssd1306.py"
+        }
+      ],
+      "homepage": "https://github.com/micropython/micropython-lib",
+      "id": "ssd1306",
+      "license": "MIT",
+      "license_url": "packages/ssd1306/1.0.0/LICENSE",
+      "name": "SSD1306",
+      "provenance_url": "packages/ssd1306/1.0.0/UPSTREAM.json",
+      "version": "1.0.0"
+    }
+  ],
+  "schema": 1
+}
