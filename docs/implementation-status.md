@@ -1,150 +1,123 @@
-# Estado da implementação e publicação
+# Relatório de publicação MicroARCA
 
-Data: 22/09/2026, São Paulo; inspeção remota em 23/09/2026 01:13 UTC.
+Publicado e verificado em 23/09/2026 às 03:05 UTC (00:05 em São Paulo).
 
-## Atualização: novo hostname e confirmação pendente
+**Endpoint público:** https://libs-microarca.traceedu.com.br/v1/catalog.json
 
-O usuário alterou o endpoint para
-`https://libs-microarca.traceedu.com.br/v1/catalog.json`, com CNAME para
-`traceedu.com.br`. Scripts, schemas, especificação, snippet e contrato do app
-foram atualizados. O catálogo e os módulos permanecem byte a byte idênticos,
-pois seus URLs são relativos.
+**Release ativo:** `0e4bff12fad2829c2f4ebf8b162e1b43aa8d10f6`.
+GitHub: `gabriel26077/SistemaMicroARCA`, privado, branch `main`.
 
-Inspeção em 23/09/2026 02:24 UTC: novo hostname e destino do CNAME resolvem para
-os mesmos IPs Cloudflare; HTTPS público responde 525 enquanto o host da origem
-ainda não está configurado. A opção explícita `--cloudflare` valida o DNS contra
-o destino aprovado e as redes da API pública oficial Cloudflare. O modo padrão
-continua exigindo IP direto da VPS. A verificação pública de HTTPS e conteúdo
-continua obrigatória após ativação, pois o DNS do proxy não comprova a origem.
+## Implementado
 
-**62 testes passaram** (54 anteriores + 8 de validação DNS/proxy), build `--check`
-e validação DNS real aprovados. Os sete containers mantêm os mesmos StartedAt
-abaixo e os domínios TraceEdu continuam com os mesmos códigos HTTP.
+Catálogo estático com schemas, validação de nomes, versões, arquivos, UTF-8,
+sintaxe, dependências exatas, ciclos e conflitos; ledger de versões imutáveis;
+build determinístico e atômico; `--check`; CI; publicação SSH/rsync em releases;
+verificação de integridade e troca atômica de `current`; documentação do cliente,
+segurança, publicação, migração e rollback. Sem backend, banco ou hooks.
 
-Backups criados, preservando metadados e confirmando SHA-256:
+Estrutura: `packages/`, `packages.lock.json`, `schemas/`, `scripts/`, `tests/`,
+`dist/v1/`, `deploy/`, `docs/`, `.github/workflows/`. O Git é privado; somente
+`dist/` é distribuído publicamente. Não foram identificados segredos na revisão.
 
-- `/var/www/TraceEdu/docker-compose.prod.yml.bak-microarca-20260923T023344651705Z`
-- `/var/www/TraceEdu/Caddyfile.domains.bak-microarca-20260923T023344651705Z`
-
-A proposta completa passou por `caddy validate` via stdin: `Valid configuration`.
-Os arquivos ativos não foram editados e nenhum container foi reiniciado.
-O [diff exato](../deploy/proposed-infrastructure.patch) e a
-[evidência dos backups/hashes](../deploy/approval-evidence.json) estão preparados.
-Próximo passo: confirmação do usuário para aplicar o diff e recriar somente Caddy.
-
-As seções seguintes registram a implementação inicial e o bloqueio de DNS do
-hostname anterior, agora substituído pelo hostname acima.
-
-## Resultado
-
-Catálogo local completo, com schemas JSON, validação estrita, dependências exatas,
-detecção de ciclos/conflitos, lock de versões imutáveis, build determinístico e
-substituição atômica de dist. Inclui CI de validação, deploy SSH/rsync em releases,
-verificação de integridade antes da troca de current e rollback testado localmente.
-Não há backend, banco, painel, hooks, secrets ou implantação automática.
-
-A estrutura final está no README: `packages/`, `schemas/`, `scripts/`, `tests/`,
-`dist/v1/`, `deploy/`, `docs/`, `.github/workflows/` e `packages.lock.json`.
-
-## Verificações locais
-
-- `python3 -m unittest discover -s tests -v`: **54 testes**, cobrindo catálogo
-  válido, determinismo, SHA-256, tamanho, limite 64 KiB, UTF-8, sintaxe, nomes,
-  reservados, traversal, dependências, ciclos, versões, duplicatas, arquivo ausente,
-  symlinks, imutabilidade, falhas de escrita/troca, transferência incompleta,
-  concorrência, retenção de releases e rollback.
-- `python3 scripts/validate_catalog.py`: duas versões válidas.
-- `python3 scripts/build_catalog.py` e `--check`: distribuição sincronizada.
-- `bash -n scripts/deploy.sh` e `git diff --check`: aprovados.
-- `bash scripts/deploy.sh --dry-run`: validação local, sem SSH/escrita remota.
-- Comparação binária da cópia OLED com a fonte local e do SSD1306 com o download
-  oficial; hashes/tamanhos também conferidos no catálogo.
-- Revisão e busca por padrões comuns de credenciais: nenhum segredo identificado.
-- Snippet aceito por `caddy adapt` na versão instalada 2.11.4; apenas aviso de
-  formatação. Não foi carregado, não solicitou certificado e não reiniciou Caddy.
-  Validação da configuração completa continua obrigatória antes do provisionamento.
-
-## Pacotes preparados — ainda não publicados
+## Pacotes publicados e proveniência
 
 | Pacote | Versão | Bytes do módulo | SHA-256 |
 | --- | --- | --- | --- |
 | oled-pintor | 1.0.0 | 2916 | `82623d73823719c5fa7a2afcc956eacc44de9aaefb2b8896d64d4c3d1dcb1d90` |
 | ssd1306 | 1.0.0 | 4922 | `b9f5331c75297774bced61bdfd12c37d4363336d064d7cf58967c88d807efbe5` |
 
-OLED foi copiado byte a byte de `ProjetoARCA/embedded/lib_oled_pintor.py`, incluindo
-finais de linha mistos. A origem tinha alterações locais; seu HEAD não identifica
-sozinho o conteúdo copiado. ProjetoARCA não foi modificado.
+OLED foi copiado byte a byte do workspace ProjetoARCA, sem modificar a origem,
+com finais de linha preservados e licença MIT. O arquivo de origem tinha
+alterações locais; seu hash identifica a cópia efetiva, não somente o HEAD.
 
-SSD1306 veio de [MicroPython/micropython-lib](https://github.com/micropython/micropython-lib/blob/4fa59bd6a5916783e8503e9f2339627c8cffa5bf/micropython/drivers/display/ssd1306/ssd1306.py),
-commit `4fa59bd6a5916783e8503e9f2339627c8cffa5bf`, versão upstream **0.1.0**, licença
-MIT. O arquivo de licença agregador e a licença original do MicroPython, com
-copyright de Damien P. George, foram preservados integralmente. URLs e histórico
-de migração estão no README do pacote; UPSTREAM.json e LICENSE acompanham a
-distribuição pública. O catálogo usa versão própria 1.0.0 para esse snapshot.
+SSD1306 veio do repositório oficial MicroPython/micropython-lib, commit
+`4fa59bd6a5916783e8503e9f2339627c8cffa5bf`, versão upstream 0.1.0, licença MIT.
+A distribuição preserva a licença agregadora integral e a licença original
+MicroPython com copyright de Damien P. George. URLs fixas e histórico estão no
+[README do pacote](../packages/ssd1306/1.0.0/README.md); LICENSE e UPSTREAM.json
+são públicos junto com o código. `oled-pintor` depende de `ssd1306==1.0.0`.
 
-Revisão de imports: OLED usa math, machine e ssd1306; o driver usa micropython,
-framebuf e time. Os módulos de firmware são esperados em MicroPython ESP32_GENERIC.
-Não foi executado ensaio físico no ESP32/display; sintaxe e proveniência não
-substituem esse teste.
+## Verificação
 
-## VPS, DNS e Caddy
+- **62 testes unittest passaram**, incluindo builds determinísticos/atômicos,
+  hashes, tamanhos, entradas inválidas, dependências, imutabilidade, proxy DNS,
+  transferência incompleta, concorrência e rollback local.
+- Validação de fontes, `build_catalog.py --check`, `deploy.sh --dry-run --cloudflare`,
+  `bash -n` e `git diff --check` aprovados.
+- `verify_public.py`: HTTPS válido, catálogo HTTP 200 e igual a dist local;
+  headers cache/CORS/nosniff; todos os módulos, tamanhos, SHA-256, licenças e
+  proveniência conferidos pela URL pública.
+- Catálogo: 1662 bytes; SHA-256
+  `5e933361ff82b1e29bd3dcaed9a73fe0e0b377cfe7e003cf76f82426feedd305`.
+  Cache `no-cache`, ETag presente. Pacotes com cache imutável de um ano.
+- TLS direto na origem validado com hostname e cadeia, TLS 1.3, Let’s Encrypt,
+  certificado válido até 22/12/2026 01:57:56 UTC.
+- Configuração completa do Caddy validada antes da recriação; montagem somente
+  leitura do diretório pai confirmada. Hashes aplicados iguais ao diff aprovado.
+- Sem novos erros nos logs do Caddy nos dois minutos anteriores à verificação
+  final. Na emissão inicial, TLS-ALPN falhou através do proxy; o fallback HTTP-01
+  automático obteve o certificado com sucesso.
 
-- DNS de `libs.microarca.traceedu.com.br`: consultas `dig +short` A/AAAA vazias;
-  resolução do sistema retorna nome desconhecido.
-- Registro necessário: **A `libs.microarca` → `2.25.196.49`**, zona
-  `traceedu.com.br`, TTL sugerido 300. Não alteramos DNS.
-- VPS: carga 0.00, 2510 MiB disponíveis, 37 GB livres, sem swap e sem unidades
-  systemd em falha. Não ajustamos recursos/redes/swap.
-- Sete containers em execução, RestartCount 0; sem healthchecks Docker definidos.
-- HTTPS: traceedu.cloud 200, traceedu.com.br 200, www.traceedu.com.br 301,
-  app.traceedu.com.br 200, staging.traceedu.com.br 200; curl sem erros TLS.
-- Nenhum backend, frontend, banco ou Caddy reiniciado. Nenhuma alteração de dados,
-  arquivo de configuração, volume ou container do TraceEdu.
-- `/var/www/MicroARCA-libs` ainda não existe. Nenhum release foi enviado.
-- Caddyfile e trechos relevantes dos três Compose foram lidos. O
-  [diff proposto](../deploy/proposed-infrastructure.patch) foi calculado em memória
-  na VPS e salvo somente localmente. Não aplicado. Backups remotos não foram
-  criados, pois o provisionamento está bloqueado pelo DNS e não houve edição.
+O User-Agent genérico do urllib recebeu HTTP 403/Cloudflare 1010. O verificador
+foi corrigido para identificar honestamente a aplicação como
+`MicroARCA-RegistryVerifier/1.0`; depois disso todos os downloads passaram.
+Não foram desativadas proteções Cloudflare. O contrato do app documenta seu
+próprio User-Agent e o tratamento de bloqueios/desafios.
 
-StartedAt observados (UTC), para comparar antes/depois da futura implantação:
+## DNS e VPS
 
-| Container | StartedAt |
+O usuário substituiu o hostname inicial de dois níveis por
+`libs-microarca.traceedu.com.br`, CNAME para `traceedu.com.br`. O proxy resolve
+para redes Cloudflare. O deploy valida essas redes pela API pública oficial e
+compara com o destino aprovado; a verificação pública comprova os bytes servidos.
+A VPS de origem permanece em `2.25.196.49`. Nenhum DNS foi alterado pelo agente.
+
+Apenas `/var/www/MicroARCA-libs` e seus releases foram criados para o catálogo.
+Os dois arquivos de infraestrutura receberam somente o diff aprovado:
+
+- `/var/www/TraceEdu/docker-compose.prod.yml`: montagem do pai no Caddy como `ro`.
+- `/var/www/TraceEdu/Caddyfile.domains`: host do catálogo e headers estáticos.
+
+Backups preservados:
+
+- `/var/www/TraceEdu/docker-compose.prod.yml.bak-microarca-20260923T023344651705Z`
+- `/var/www/TraceEdu/Caddyfile.domains.bak-microarca-20260923T023344651705Z`
+
+Somente `traceedu-caddy` foi recriado, às 02:56:20 UTC. Nenhum backend, frontend
+ou PostgreSQL reiniciou: os seis containers mantiveram IDs, StartedAt e contadores
+RestartCount. Os sete estão em execução; não definem healthcheck Docker.
+
+| Domínio existente | HTTP após publicação |
 | --- | --- |
-| traceedu-frontend | 2026-09-21T16:03:20.419193352Z |
-| traceedu-backend | 2026-09-21T16:03:20.221226637Z |
-| traceedu-db | 2026-08-08T19:02:04.28108359Z |
-| traceedu-dev-frontend | 2026-09-21T16:01:57.792134695Z |
-| traceedu-dev-backend | 2026-09-21T16:01:57.560774103Z |
-| traceedu-dev-db | 2026-08-30T22:33:29.92891813Z |
-| traceedu-caddy | 2026-09-13T02:36:22.259568595Z |
+| traceedu.cloud | 200 |
+| traceedu.com.br | 200 |
+| www.traceedu.com.br | 301 |
+| app.traceedu.com.br | 200 |
+| staging.traceedu.com.br | 200 |
 
-## Git e próximos passos
+Na inspeção anterior havia cerca de 2,5 GiB de memória disponível, 37 GB livres,
+carga baixa e nenhuma unidade systemd em falha. Não foram alterados banco, rede,
+swap, firewall, imagens ou volumes do TraceEdu. Não houve compose down ou prune.
 
-Commits da implementação inicial, posteriormente enviados para `origin/main`:
+[Evidência da aprovação e backups](../deploy/approval-evidence.json) ·
+[Evidência final de publicação](../deploy/publication-evidence.json) ·
+[Diff exato aplicado](../deploy/proposed-infrastructure.patch).
 
-- `c8bf161` — schemas e bibliotecas com proveniência.
-- `e679c13` — validador e build atômico determinístico.
-- `bbdece6` — testes de validação e build.
-- `4b45f89` — deploy, verificação pública, testes de releases e CI.
-- `docs: document client contract and blocked DNS deployment` — documentação e
-  este relatório; consultar `git log -5 --oneline` para o hash final.
+## Git, rollback e limites
 
-Atualização após autorização de publicação: código enviado ao GitHub em
-`gabriel26077/SistemaMicroARCA`; o CI da implementação passou
-([execução 35808052618](https://github.com/gabriel26077/SistemaMicroARCA/actions/runs/35808052618)).
-O repositório estava público e sua visibilidade foi corrigida para **privado**,
-conforme a especificação. Nova inspeção da VPS confirmou DNS A/AAAA ainda ausentes,
-os mesmos StartedAt dos sete containers e os mesmos códigos HTTP dos domínios
-TraceEdu. A publicação na VPS continua bloqueada pelo DNS; nenhuma configuração
-remota foi alterada e nenhum release foi transferido.
+Commits enviados incluem `c8bf161` (schemas/bibliotecas), `e679c13` (build),
+`bbdece6` (testes), `4b45f89` (deploy/CI), `ba7c5d1` (documentação), `25bef72`
+(estado GitHub) e `0e4bff1` (hostname/Cloudflare, release publicado). A correção
+posterior do identificador do verificador e este relatório não alteram dist;
+a publicação continua vinculada ao release acima. Consultar `git log` para os
+commits de documentação/verificação posteriores. O repositório foi tornado
+privado conforme a especificação e os pushes foram autorizados pelo usuário.
 
-A URL atual aguarda configuração da origem e publicação:
-`https://libs-microarca.traceedu.com.br/v1/catalog.json`.
+É o primeiro release real, portanto não existe release anterior de produção.
+Rollback por troca de symlink foi testado localmente com duas releases; rollback
+da primeira instalação restaura os dois backups, valida e recria somente Caddy,
+preservando o catálogo no disco. Procedimento em [rollback.md](../deploy/rollback.md).
 
-Após a confirmação pendente, publicar o release completo, aplicar somente os
-diffs aprovados, recriar Caddy e executar `python3 scripts/verify_public.py`,
-comparando os domínios TraceEdu e StartedAt. Procedimento em
-[deploy/README.md](../deploy/README.md).
-
-Limitações restantes: ensaio físico OLED/ESP32, publicação HTTPS condicionada a
-DNS/autorização e futura assinatura Ed25519 com gerenciamento real de chaves.
+Limitações: falta ensaio físico OLED/ESP32; SHA-256 não protege contra servidor e
+catálogo comprometidos juntos. Assinatura Ed25519, rotação de chaves e proteção
+anti-replay são evolução futura, sem assinatura simulada nesta versão.

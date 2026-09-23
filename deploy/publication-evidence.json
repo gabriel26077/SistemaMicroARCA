@@ -1,0 +1,119 @@
+{
+  "timestamp": "2026-09-23T03:05:53.680042+00:00",
+  "endpoint": "https://libs-microarca.traceedu.com.br/v1/catalog.json",
+  "release": "releases/0e4bff12fad2829c2f4ebf8b162e1b43aa8d10f6",
+  "downloads": [
+    {
+      "url": "packages/oled-pintor/1.0.0/lib_oled_pintor.py",
+      "size": 2916,
+      "sha256": "82623d73823719c5fa7a2afcc956eacc44de9aaefb2b8896d64d4c3d1dcb1d90",
+      "http": 200,
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "url": "packages/ssd1306/1.0.0/ssd1306.py",
+      "size": 4922,
+      "sha256": "b9f5331c75297774bced61bdfd12c37d4363336d064d7cf58967c88d807efbe5",
+      "http": 200,
+      "cache_control": "public, max-age=31536000, immutable"
+    }
+  ],
+  "catalog": {
+    "http": 200,
+    "size": 1662,
+    "sha256": "5e933361ff82b1e29bd3dcaed9a73fe0e0b377cfe7e003cf76f82426feedd305",
+    "cache_control": "no-cache",
+    "etag": "\"dlmagxjzeo5y1a6\"",
+    "cors": "*",
+    "nosniff": "nosniff"
+  },
+  "origin_tls": {
+    "protocol": "TLSv1.3",
+    "issuer": [
+      [
+        [
+          "countryName",
+          "US"
+        ]
+      ],
+      [
+        [
+          "organizationName",
+          "Let's Encrypt"
+        ]
+      ],
+      [
+        [
+          "commonName",
+          "YE2"
+        ]
+      ]
+    ],
+    "subject_alt_names": [
+      [
+        "DNS",
+        "libs-microarca.traceedu.com.br"
+      ]
+    ],
+    "expires": "Dec 22 01:57:56 2026 GMT"
+  },
+  "containers": {
+    "/traceedu-frontend": {
+      "id": "308dc13843ed1cd52647a857fb29c45443c43d16efe940abdc28834879e5cdb5",
+      "started": "2026-09-21T16:03:20.419193352Z",
+      "status": "running",
+      "restarts": 0
+    },
+    "/traceedu-backend": {
+      "id": "8e1668d5d8bd7bf7e487812aa4faff7d28a68c4b1ab57f542a927cf2751f54c0",
+      "started": "2026-09-21T16:03:20.221226637Z",
+      "status": "running",
+      "restarts": 0
+    },
+    "/traceedu-db": {
+      "id": "80e18c140fe4d06b16a8a94614fcfa1f8325f614b6a25fdc703c33c5d0184dd3",
+      "started": "2026-08-08T19:02:04.28108359Z",
+      "status": "running",
+      "restarts": 0
+    },
+    "/traceedu-dev-frontend": {
+      "id": "e33145062a0148de925632bc98b9957899fb6157a17060246ab864fff640a590",
+      "started": "2026-09-21T16:01:57.792134695Z",
+      "status": "running",
+      "restarts": 0
+    },
+    "/traceedu-dev-backend": {
+      "id": "60c4c4dbb7e3387596d7b1c0cf8515d1d687cd16d68741e2dda98af0752ab16c",
+      "started": "2026-09-21T16:01:57.560774103Z",
+      "status": "running",
+      "restarts": 0
+    },
+    "/traceedu-dev-db": {
+      "id": "7a90cc2d74392a9279f772969fdc6a4bbda2fa7e0b77464c9b0578213f814fa8",
+      "started": "2026-08-30T22:33:29.92891813Z",
+      "status": "running",
+      "restarts": 0
+    },
+    "/traceedu-caddy": {
+      "id": "adc047b30673d328b9d3381400583443aff20c0f7e48a220d0d12ca289de738d",
+      "started": "2026-09-23T02:56:20.84201345Z",
+      "status": "running",
+      "restarts": 0
+    }
+  },
+  "health": {
+    "traceedu.cloud": 200,
+    "traceedu.com.br": 200,
+    "www.traceedu.com.br": 301,
+    "app.traceedu.com.br": 200,
+    "staging.traceedu.com.br": 200
+  },
+  "caddy_errors_last_2m": [],
+  "first_certificate_note": "TLS-ALPN challenge failed behind Cloudflare; automatic HTTP-01 fallback obtained the certificate successfully.",
+  "only_caddy_recreated": true,
+  "applied_hashes": {
+    "/var/www/TraceEdu/docker-compose.prod.yml": "3dceb8e09ab122e69fa5d4aa25dc30bcde214558bd20606388da30a44725e733",
+    "/var/www/TraceEdu/Caddyfile.domains": "e48f9dcb65e9727c154139df59324a20c516c8f5aa75a8bb1ef585c5c8ca2c7d"
+  },
+  "caddy_mount_readonly": true
+}

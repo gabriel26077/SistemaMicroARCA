@@ -2,7 +2,7 @@
 
 Fonte auditável de bibliotecas MicroPython para ESP32. A distribuição é estática:
 sem backend, banco, autenticação ou execução de Python no servidor web.
-Endpoint previsto: `https://libs-microarca.traceedu.com.br/v1/catalog.json`.
+Endpoint publicado: [catalog.json](https://libs-microarca.traceedu.com.br/v1/catalog.json).
 Consulte [o estado da implantação](docs/implementation-status.md) antes de usá-lo.
 
 **O repositório é privado; os arquivos publicados são públicos.** Bibliotecas
@@ -126,8 +126,9 @@ IA_SPEC.md                especificação original
 ## Migração
 
 Copie releases e `current`, mantendo bytes e caminhos. Configure DNS/TLS/Caddy na
-nova VPS. Altere o endpoint raiz no app, alias SSH e domínio verificado em
-`deploy.sh`; execute `verify_public.py --url https://novo-dominio/v1/catalog.json`.
+nova VPS. Altere o endpoint raiz no app, o alias SSH em `deploy.sh` e os nomes
+`DOMAIN`/`CNAME_TARGET` em `scripts/check_dns.py`; execute
+`verify_public.py --url https://novo-dominio/v1/catalog.json`.
 Nenhum pacote ou catálogo precisa ser regenerado: URLs são relativas ao catálogo.
 Mantenha uma janela de coexistência e valide o destino antes de desligar a origem.
 

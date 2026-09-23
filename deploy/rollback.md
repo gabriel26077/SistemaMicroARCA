@@ -2,6 +2,11 @@
 
 ## Somente catálogo
 
+Na publicação inicial existe apenas o release `0e4bff12fad2829c2f4ebf8b162e1b43aa8d10f6`;
+ainda não há release de produção anterior. O fluxo de troca para um release anterior
+foi testado em diretório local temporário. Para desfazer a primeira instalação,
+usar a restauração de infraestrutura descrita adiante, preservando os arquivos.
+
 Escolher o commit anterior entre os diretórios de release, conferir catálogo e
 integridade e garantir que não há deploy concorrente (`.deploy-lock`). Criar o
 symlink temporário no mesmo diretório e substituí-lo atomicamente:

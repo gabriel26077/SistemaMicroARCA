@@ -21,6 +21,8 @@
     "/var/www/TraceEdu-dev/docker-compose.staging.yml": "cefd752d1b260e64097b17f725ba07d25f832df2ee21756a4f72a62686a669d8"
   },
   "validation": "Valid configuration",
-  "status": "awaiting-user-confirmation",
-  "endpoint": "https://libs-microarca.traceedu.com.br/v1/catalog.json"
+  "status": "approved-and-applied",
+  "endpoint": "https://libs-microarca.traceedu.com.br/v1/catalog.json",
+  "applied_at": "2026-09-23T02:56:21.274371+00:00",
+  "publication_evidence": "publication-evidence.json"
 }

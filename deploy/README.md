@@ -1,10 +1,12 @@
 # Operação do catálogo estático
 
-**Endpoint atual: `libs-microarca.traceedu.com.br`, via Cloudflare.** O usuário
-criou um CNAME para `traceedu.com.br`. O snippet `Caddyfile.microarca` é preparação
-local; a configuração de Caddy/Compose ainda aguarda confirmação.
-O provisionamento exige uma única confirmação após diff exato e backups, conforme
-`IA_SPEC.md`. Deploy de arquivos e provisionamento de infraestrutura são separados.
+**Publicado: `https://libs-microarca.traceedu.com.br/v1/catalog.json`, via Cloudflare.**
+O usuário criou um CNAME para `traceedu.com.br` e aprovou o diff de Caddy/Compose.
+Release atual: `0e4bff12fad2829c2f4ebf8b162e1b43aa8d10f6`. Somente Caddy foi
+recriado; os seis containers de aplicação/banco mantiveram seus IDs e StartedAt.
+O provisionamento inicial recebeu a confirmação exigida após diff exato e backups.
+Deploy normal de arquivos não altera infraestrutura. As instruções abaixo também
+servem para uma futura reinstalação; não reaplicar o diff sobre a configuração ativa.
 
 ## DNS
 
@@ -19,8 +21,8 @@ coberto pelo Universal SSL da Cloudflare. Configuração informada na zona
 Inspeção em 2026-09-23 02:24 UTC: o novo nome e `traceedu.com.br` resolvem para
 `104.21.74.162`, `172.67.204.66` e IPv6 da Cloudflare, indicando proxy ativo.
 O IPv4 da VPS continua `2.25.196.49`; não deve ser confundido com os IPs do proxy.
-A resposta pública inicial foi HTTP 525 (TLS da origem ainda não estabelecido
-para o novo host). Não alterar DNS ou configurações dos hosts existentes.
+A resposta pública inicial foi HTTP 525; após habilitar o host no Caddy e emitir
+o certificado Let’s Encrypt, passou a HTTP 200. Não alterar DNS dos hosts existentes.
 
 ```bash
 ssh vps 'dig +short libs-microarca.traceedu.com.br A'
@@ -58,8 +60,8 @@ Arquivos relevantes:
 Menor mudança de Compose, no serviço `caddy`, sob `volumes`:
 
 O [diff proposto](proposed-infrastructure.patch) foi gerado em memória a partir
-dos arquivos reais da VPS e salvo apenas neste repositório. Deve ser refeito se a
-configuração mudar. Não foi aplicado e não substitui backups ou aprovação.
+dos arquivos reais da VPS e aplicado após aprovação. Ele representa a diferença
+exata em relação aos backups registrados, não um patch a reaplicar.
 
 ```yaml
       - /var/www/MicroARCA-libs:/srv/microarca-libs:ro
@@ -87,7 +89,9 @@ Preparação executada em 23/09/2026: backups com sufixo
 `.bak-microarca-20260923T023344651705Z` nos dois arquivos. Hashes de originais,
 backups e propostas estão em [approval-evidence.json](approval-evidence.json).
 A configuração completa proposta passou por `caddy validate` via stdin, sem
-carregar os servidores. Arquivos ativos permanecem intactos, aguardando confirmação.
+carregar os servidores. Após confirmação, os dois arquivos foram atualizados com
+os hashes aprovados e somente Caddy foi recriado. Evidências finais em
+[publication-evidence.json](publication-evidence.json).
 
 ## Após autorização e DNS correto
 
@@ -132,6 +136,16 @@ ssh vps 'docker logs --since 10m traceedu-caddy'
 O verificador exige HTTPS válido, HTTP 200, igualdade do catálogo com dist local,
 headers de cache/CORS/nosniff, todos os downloads, tamanhos e SHA-256, incluindo
 licenças/proveniência. Inspecionar logs sem compartilhar tokens/dados sensíveis.
+
+O verificador usa `User-Agent: MicroARCA-RegistryVerifier/1.0`. A identificação
+genérica do urllib recebeu HTTP 403/erro Cloudflare 1010; a identificação explícita
+do cliente foi aceita. Nenhuma configuração de segurança da Cloudflare foi alterada.
+O app deve usar seu identificador próprio, conforme o contrato do cliente.
+
+Na primeira emissão, o desafio ACME TLS-ALPN falhou através do proxy e o Caddy
+obteve automaticamente o certificado via HTTP-01. Não houve erro novo nos dois
+minutos anteriores à verificação final. O certificado da origem também foi
+validado diretamente por TLS, com verificação de hostname/cadeia.
 
 Repetir requisições a `traceedu.cloud`, `traceedu.com.br`, `www.traceedu.com.br`,
 `app.traceedu.com.br` e `staging.traceedu.com.br`; redirecionamento 301 do `www`

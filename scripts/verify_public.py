@@ -20,6 +20,8 @@ class NoRedirect(HTTPRedirectHandler):
 def verify(endpoint, local=ROOT / 'dist'):
     require(urlsplit(endpoint).scheme == 'https', 'HTTPS obrigatório')
     opener = build_opener(NoRedirect())
+    # Identify this application honestly; Cloudflare BIC rejects urllib's generic UA.
+    opener.addheaders = [('User-Agent', 'MicroARCA-RegistryVerifier/1.0'), ('Accept', '*/*')]
 
     def fetch(url, limit, cache):
         with opener.open(url, timeout=15) as response:

@@ -8,6 +8,10 @@ em relação ao catálogo: `packages/ssd1306/1.0.0/ssd1306.py` fica em `/v1/pack
 - HTTPS obrigatório, validação de certificado e hostname com a trust store do
   sistema. Nesta versão rejeitar redirecionamentos e URLs de outra origem; nunca
   aceitar downgrade para HTTP.
+- Identificar o cliente com `User-Agent: MicroARCA/<versão>`. O proxy Cloudflare
+  rejeitou o User-Agent genérico do urllib com HTTP 403/erro 1010; o identificador
+  explícito do MicroARCA foi aceito. Não fingir ser navegador nem tratar User-Agent
+  como autenticação. Respostas de bloqueio/desafio não são catálogos válidos.
 - Timeout de conexão: 10 s; leitura: 15 s por operação; prazo total: 60 s por
   requisição. Cancelamento do usuário interrompe a transferência.
 - Catálogo limitado a 1 MiB descomprimido: conferir Content-Length quando presente
