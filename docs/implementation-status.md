@@ -87,7 +87,7 @@ StartedAt observados (UTC), para comparar antes/depois da futura implantação:
 
 ## Git e próximos passos
 
-Commits locais criados, sem push:
+Commits da implementação inicial, posteriormente enviados para `origin/main`:
 
 - `c8bf161` — schemas e bibliotecas com proveniência.
 - `e679c13` — validador e build atômico determinístico.
@@ -95,6 +95,15 @@ Commits locais criados, sem push:
 - `4b45f89` — deploy, verificação pública, testes de releases e CI.
 - `docs: document client contract and blocked DNS deployment` — documentação e
   este relatório; consultar `git log -5 --oneline` para o hash final.
+
+Atualização após autorização de publicação: código enviado ao GitHub em
+`gabriel26077/SistemaMicroARCA`; o CI da implementação passou
+([execução 35808052618](https://github.com/gabriel26077/SistemaMicroARCA/actions/runs/35808052618)).
+O repositório estava público e sua visibilidade foi corrigida para **privado**,
+conforme a especificação. Nova inspeção da VPS confirmou DNS A/AAAA ainda ausentes,
+os mesmos StartedAt dos sete containers e os mesmos códigos HTTP dos domínios
+TraceEdu. A publicação na VPS continua bloqueada pelo DNS; nenhuma configuração
+remota foi alterada e nenhum release foi transferido.
 
 A URL prevista ainda não está disponível:
 `https://libs.microarca.traceedu.com.br/v1/catalog.json`.
