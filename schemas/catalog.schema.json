@@ -135,6 +135,30 @@
           "provenance_url": {
             "type": "string",
             "pattern": "^packages/[a-z0-9-]+/[0-9]+\\.[0-9]+\\.[0-9]+/[A-Za-z_0-9.]+$"
+          },
+          "blocks": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "pattern": "^packages/[a-z0-9-]+/[0-9]+\\.[0-9]+\\.[0-9]+/blocks\\.json$"
+              },
+              "size": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 65536
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "url",
+              "size",
+              "sha256"
+            ],
+            "additionalProperties": false
           }
         },
         "required": [

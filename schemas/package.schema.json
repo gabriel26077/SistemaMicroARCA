@@ -95,6 +95,19 @@
         "third-party"
       ]
     },
+    "blocks": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "const": "blocks.json"
+        }
+      },
+      "required": [
+        "source"
+      ],
+      "additionalProperties": false
+    },
     "files": {
       "type": "array",
       "items": {

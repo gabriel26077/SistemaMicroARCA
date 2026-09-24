@@ -38,6 +38,8 @@ de visibilidade atômica, não de recuperação após falha física de disco.
 
 1. Crie `packages/<id>/<X.Y.Z>/` com manifest, arquivos `.py` e licença completa.
    Siga os exemplos e [package.schema.json](schemas/package.schema.json).
+   Pacotes com integração visual podem declarar `blocks.json`, conforme
+   [blocks.schema.json](schemas/blocks.schema.json).
 2. IDs usam ASCII minúsculo, números e hífens internos. Cada `install_as` é um
    identificador Python ASCII com `.py`, instalado diretamente em `/lib`.
 3. Declare dependências exatas. Terceiros exigem `origin: "third-party"`, homepage
@@ -62,7 +64,7 @@ de todos os arquivos de cada versão e é comparado com `HEAD`. CI compara tamb�
 com o commit anterior/base do PR, detectando reescrita coordenada de fonte e lock.
 
 Metadados permitidos: `manifest.json`, `LICENSE`, `README`, `README.md`, `README.txt`,
-`UPSTREAM.json`. Symlinks, subdiretórios, arquivos extras, campos desconhecidos e
+`UPSTREAM.json` e o `blocks.json` declarado. Symlinks, subdiretórios, arquivos extras, campos desconhecidos e
 chaves JSON repetidas são rejeitados. O validador implementa os recursos de JSON
 Schema usados neste projeto e verificações semânticas adicionais.
 
@@ -70,7 +72,7 @@ Schema usados neste projeto e verificações semânticas adicionais.
 
 | Pacote | Versão do catálogo | Origem | Licença |
 | --- | --- | --- | --- |
-| oled-pintor | 1.0.0 | Cópia local exata do ProjetoARCA | MIT |
+| oled-pintor | 1.0.0, 1.1.0 | ProjetoARCA; 1.1.0 adiciona blocos declarativos | MIT |
 | ssd1306 | 1.0.0 | MicroPython/micropython-lib, upstream 0.1.0 | MIT |
 | microarca-teste | 1.0.0 | Funções simples do Projeto ARCA para testar a IDE | MIT |
 

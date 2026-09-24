@@ -1,5 +1,6 @@
 """Validation and canonical serialization. Never imports package code."""
 import ast
+from collections import Counter
 import hashlib
 import json
 import keyword
@@ -9,6 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MAX_FILE = 65536
+MAX_BLOCKS = 65536
 MAX_CATALOG = 1048576
 RESERVED = {'boot.py', 'main.py', 'user.py', 'arca_ble.py', 'arca_runtime.py', 'arca_files.py'}
 METADATA = {'manifest.json', 'LICENSE', 'README', 'README.md', 'README.txt', 'UPSTREAM.json'}
@@ -91,6 +93,69 @@ def safe_name(name):
     require(name.lower() not in RESERVED, f'nome reservado: {name}')
 
 
+def placeholder_names(value, subject):
+    pattern = re.compile(r'\{([A-Z][A-Z0-9_]*)\}', re.ASCII)
+    names = [match.group(1) for match in pattern.finditer(value)]
+    remainder = pattern.sub('', value)
+    require('{' not in remainder and '}' not in remainder, f'placeholder invalido em {subject}')
+    return names
+
+
+def validate_blocks(data, identity):
+    require(0 < len(data) <= MAX_BLOCKS, f'manifesto de blocos fora do limite: {identity}')
+    value = parse_json(data)
+    schema = parse_json((ROOT / 'schemas/blocks.schema.json').read_bytes())
+    schema_check(value, schema)
+    require((value['package']['id'], value['package']['version']) == identity,
+            f'manifesto de blocos pertence a outro pacote: {identity}')
+    prefix = identity[0].replace('-', '_') + '_'
+    seen_types = set()
+    import_pattern = re.compile(
+        r'(?:import [A-Za-z_][A-Za-z0-9_.]*|'
+        r'from [A-Za-z_][A-Za-z0-9_.]* import '
+        r'[A-Za-z_][A-Za-z0-9_]*(?:, [A-Za-z_][A-Za-z0-9_]*)*)',
+        re.ASCII,
+    )
+    for block in value['blocks']:
+        block_type = block['type']
+        require(block_type.startswith(prefix), f'tipo de bloco sem namespace: {block_type}')
+        require(block_type not in seen_types, f'tipo de bloco duplicado: {block_type}')
+        seen_types.add(block_type)
+        fields = block['fields']
+        names = [field['name'] for field in fields]
+        require(len(names) == len(set(names)), f'campo duplicado em {block_type}')
+        require(Counter(placeholder_names(block['label'], block_type)) == Counter(names),
+                f'label diverge dos campos em {block_type}')
+        for field in fields:
+            field_type, default = field['type'], field['default']
+            if field_type == 'identifier':
+                require(type(default) is str and
+                        re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*', default, re.ASCII) and
+                        not keyword.iskeyword(default),
+                        f'identificador padrao invalido em {block_type}')
+                require('min' not in field and 'max' not in field,
+                        f'limites invalidos em {block_type}')
+            elif field_type == 'text':
+                require(type(default) is str and len(default) <= 240,
+                        f'texto padrao invalido em {block_type}')
+                require('min' not in field and 'max' not in field,
+                        f'limites invalidos em {block_type}')
+            else:
+                require(type(default) is int and type(field.get('min')) is int and
+                        type(field.get('max')) is int and
+                        -1000000 <= field['min'] <= default <= field['max'] <= 1000000,
+                        f'inteiro padrao invalido em {block_type}')
+        python = block['python']
+        require(all(import_pattern.fullmatch(item) for item in python['imports']),
+                f'import invalido em {block_type}')
+        template = python['template']
+        require('\r' not in template and template.endswith('\n') and template.count('\n') == 1,
+                f'template precisa ser uma linha em {block_type}')
+        require(set(placeholder_names(template, block_type)) == set(names),
+                f'template diverge dos campos em {block_type}')
+    return value
+
+
 def plain(path, directory=False):
     require(not path.is_symlink(), f'link simbólico proibido: {path}')
     require(path.is_dir() if directory else path.is_file(), f'caminho ausente ou não regular: {path}')
@@ -149,6 +214,14 @@ def sources(root):
                 except (UnicodeError, SyntaxError, ValueError) as exc:
                     raise Invalid(f'Python/UTF-8 inválido: {path}: {exc}') from exc
                 files[name] = data
+            blocks = manifest.get('blocks')
+            if blocks is not None:
+                source = blocks['source']
+                require(source not in declared, f'arquivo duplicado: {source}')
+                declared.add(source)
+                path = directory / source
+                plain(path)
+                validate_blocks(path.read_bytes(), identity)
             members = {}
             for path in sorted(directory.iterdir()):
                 plain(path)
@@ -248,7 +321,8 @@ def validate(root, baseline='HEAD', update_lock=False):
 def render(packages):
     entries, output = [], {}
     for manifest, files, directory in packages:
-        entry = {k: v for k, v in manifest.items() if k not in {'schema', 'files', 'origin'}}
+        entry = {k: v for k, v in manifest.items()
+                 if k not in {'schema', 'files', 'origin', 'blocks'}}
         entry['dependencies'] = sorted(entry['dependencies'], key=lambda d: (d['id'], tuple(map(int, d['version'].split('.')))))
         entry['compatibility'] = dict(entry['compatibility'], boards=sorted(entry['compatibility']['boards']))
         prefix = f"packages/{entry['id']}/{entry['version']}/"
@@ -257,6 +331,12 @@ def render(packages):
             url = prefix + name
             output['v1/' + url] = data
             entry['files'].append({'name': name, 'url': url, 'size': len(data), 'sha256': sha(data)})
+        blocks = manifest.get('blocks')
+        if blocks is not None:
+            data = (directory / blocks['source']).read_bytes()
+            url = prefix + 'blocks.json'
+            output['v1/' + url] = data
+            entry['blocks'] = {'url': url, 'size': len(data), 'sha256': sha(data)}
         # License travels with the public distribution, never just in the private Git repo.
         for metadata in ('LICENSE', 'UPSTREAM.json'):
             path = directory / metadata

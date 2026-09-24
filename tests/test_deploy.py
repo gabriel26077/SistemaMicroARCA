@@ -37,6 +37,18 @@ class ReleaseTests(RegistryCase):
 
     def test_complete_release_and_idempotent_redeploy(self):
         self.publish()
+
+    def test_complete_release_with_declarative_blocks(self):
+        directory = self.add_package('alpha', '1.0.1')
+        self.add_blocks(directory)
+        self.lock()
+        build(self.root)
+        self.publish()
+        release = (self.base / 'current').resolve()
+        validate_downloads(release)
+        self.assertTrue(
+            (release / 'v1/packages/alpha/1.0.1/blocks.json').is_file()
+        )
         self.assertEqual(os.readlink(self.base / 'current'), f'releases/{self.commit}')
         validate_downloads((self.base / 'current').resolve())
         self.publish()

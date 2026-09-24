@@ -37,5 +37,30 @@ class RegistryCase(unittest.TestCase):
         fn(manifest)
         path.write_bytes(json_bytes(manifest))
 
+    def add_blocks(self, directory=None):
+        directory = directory or self.directory
+        manifest_path = directory / 'manifest.json'
+        manifest = json.loads(manifest_path.read_bytes())
+        manifest['blocks'] = {'source': 'blocks.json'}
+        manifest_path.write_bytes(json_bytes(manifest))
+        block_type = manifest['id'].replace('-', '_') + '_acao'
+        value = {
+            'schema': 1,
+            'package': {'id': manifest['id'], 'version': manifest['version']},
+            'category': {'name': 'Example blocks', 'color': '#336699'},
+            'blocks': [{
+                'type': block_type,
+                'name': 'Action',
+                'description': 'Runs one action.',
+                'label': 'use object {OBJECT}',
+                'fields': [
+                    {'name': 'OBJECT', 'type': 'identifier', 'default': 'device'},
+                ],
+                'python': {'imports': [], 'template': '{OBJECT}.run()\n'},
+            }],
+        }
+        (directory / 'blocks.json').write_bytes(json_bytes(value))
+        return directory / 'blocks.json'
+
     def lock(self):
         validate(self.root, update_lock=True)

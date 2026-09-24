@@ -1,0 +1,136 @@
+{
+  "schema": 1,
+  "package": {
+    "id": "oled-pintor",
+    "version": "1.1.0"
+  },
+  "category": {
+    "name": "Tela OLED",
+    "color": "#D96C18"
+  },
+  "blocks": [
+    {
+      "type": "oled_pintor_criar_tela",
+      "name": "Criar tela",
+      "description": "Inicializa o display OLED e guarda o objeto em um nome.",
+      "label": "criar tela {TELA} com SCL {SCL} e SDA {SDA}",
+      "fields": [
+        {"name": "TELA", "type": "identifier", "default": "tela"},
+        {"name": "SCL", "type": "integer", "default": 22, "min": 0, "max": 39},
+        {"name": "SDA", "type": "integer", "default": 21, "min": 0, "max": 39}
+      ],
+      "python": {
+        "imports": ["from lib_oled_pintor import criar_tela"],
+        "template": "{TELA} = criar_tela(scl={SCL}, sda={SDA})\n"
+      }
+    },
+    {
+      "type": "oled_pintor_limpar",
+      "name": "Limpar tela",
+      "description": "Apaga o conte\u00fado no buffer da tela.",
+      "label": "limpar tela {TELA}",
+      "fields": [
+        {"name": "TELA", "type": "identifier", "default": "tela"}
+      ],
+      "python": {
+        "imports": [],
+        "template": "{TELA}.limpa()\n"
+      }
+    },
+    {
+      "type": "oled_pintor_atualizar",
+      "name": "Atualizar tela",
+      "description": "Envia o buffer de desenho para o display.",
+      "label": "atualizar tela {TELA}",
+      "fields": [
+        {"name": "TELA", "type": "identifier", "default": "tela"}
+      ],
+      "python": {
+        "imports": [],
+        "template": "{TELA}.atualiza()\n"
+      }
+    },
+    {
+      "type": "oled_pintor_escrever",
+      "name": "Escrever texto",
+      "description": "Escreve um texto na posi\u00e7\u00e3o informada.",
+      "label": "na tela {TELA} escrever {TEXTO} em x {X} y {Y}",
+      "fields": [
+        {"name": "TELA", "type": "identifier", "default": "tela"},
+        {"name": "TEXTO", "type": "text", "default": "Ola!"},
+        {"name": "X", "type": "integer", "default": 0, "min": 0, "max": 127},
+        {"name": "Y", "type": "integer", "default": 0, "min": 0, "max": 63}
+      ],
+      "python": {
+        "imports": [],
+        "template": "{TELA}.escreve({TEXTO}, {X}, {Y})\n"
+      }
+    },
+    {
+      "type": "oled_pintor_linha",
+      "name": "Desenhar linha",
+      "description": "Desenha uma linha entre dois pontos.",
+      "label": "na tela {TELA} linha de x {X1} y {Y1} at\u00e9 x {X2} y {Y2}",
+      "fields": [
+        {"name": "TELA", "type": "identifier", "default": "tela"},
+        {"name": "X1", "type": "integer", "default": 0, "min": 0, "max": 127},
+        {"name": "Y1", "type": "integer", "default": 0, "min": 0, "max": 63},
+        {"name": "X2", "type": "integer", "default": 127, "min": 0, "max": 127},
+        {"name": "Y2", "type": "integer", "default": 63, "min": 0, "max": 63}
+      ],
+      "python": {
+        "imports": [],
+        "template": "{TELA}.segreta({X1}, {Y1}, {X2}, {Y2})\n"
+      }
+    },
+    {
+      "type": "oled_pintor_retangulo",
+      "name": "Desenhar ret\u00e2ngulo",
+      "description": "Desenha o contorno de um ret\u00e2ngulo.",
+      "label": "na tela {TELA} ret\u00e2ngulo de x {X1} y {Y1} at\u00e9 x {X2} y {Y2}",
+      "fields": [
+        {"name": "TELA", "type": "identifier", "default": "tela"},
+        {"name": "X1", "type": "integer", "default": 0, "min": 0, "max": 127},
+        {"name": "Y1", "type": "integer", "default": 0, "min": 0, "max": 63},
+        {"name": "X2", "type": "integer", "default": 40, "min": 0, "max": 127},
+        {"name": "Y2", "type": "integer", "default": 20, "min": 0, "max": 63}
+      ],
+      "python": {
+        "imports": [],
+        "template": "{TELA}.retangulo({X1}, {Y1}, {X2}, {Y2})\n"
+      }
+    },
+    {
+      "type": "oled_pintor_circulo",
+      "name": "Desenhar c\u00edrculo",
+      "description": "Desenha um c\u00edrculo com centro e raio.",
+      "label": "na tela {TELA} c\u00edrculo em x {X} y {Y} raio {RAIO}",
+      "fields": [
+        {"name": "TELA", "type": "identifier", "default": "tela"},
+        {"name": "X", "type": "integer", "default": 64, "min": 0, "max": 127},
+        {"name": "Y", "type": "integer", "default": 32, "min": 0, "max": 63},
+        {"name": "RAIO", "type": "integer", "default": 10, "min": 1, "max": 63}
+      ],
+      "python": {
+        "imports": [],
+        "template": "{TELA}.circulo({X}, {Y}, {RAIO})\n"
+      }
+    },
+    {
+      "type": "oled_pintor_coracao",
+      "name": "Desenhar cora\u00e7\u00e3o",
+      "description": "Desenha um cora\u00e7\u00e3o com centro e tamanho.",
+      "label": "na tela {TELA} cora\u00e7\u00e3o em x {X} y {Y} tamanho {RAIO}",
+      "fields": [
+        {"name": "TELA", "type": "identifier", "default": "tela"},
+        {"name": "X", "type": "integer", "default": 64, "min": 0, "max": 127},
+        {"name": "Y", "type": "integer", "default": 32, "min": 0, "max": 63},
+        {"name": "RAIO", "type": "integer", "default": 12, "min": 1, "max": 32}
+      ],
+      "python": {
+        "imports": [],
+        "template": "{TELA}.coracao({X}, {Y}, {RAIO})\n"
+      }
+    }
+  ]
+}

@@ -58,6 +58,31 @@ class ValidationTests(RegistryCase):
         (self.directory / 'alpha.py').write_text('raise RuntimeError("must not execute")\n')
         sources(self.root)
 
+    def test_valid_declarative_blocks(self):
+        self.add_blocks()
+        packages, _ = sources(self.root)
+        self.assertEqual(packages[0][0]['blocks'], {'source': 'blocks.json'})
+
+    def test_blocks_must_match_package_and_fields(self):
+        path = self.add_blocks()
+        value = json.loads(path.read_bytes())
+        value['package']['id'] = 'other'
+        path.write_bytes(json_bytes(value))
+        with self.assertRaisesRegex(Invalid, 'outro pacote'):
+            sources(self.root)
+
+        value['package']['id'] = 'alpha'
+        value['blocks'][0]['python']['template'] = 'pass\n'
+        path.write_bytes(json_bytes(value))
+        with self.assertRaisesRegex(Invalid, 'diverge'):
+            sources(self.root)
+
+    def test_blocks_reject_unknown_javascript_hook(self):
+        self.add_blocks()
+        self.modify(lambda manifest: manifest['blocks'].update(javascript='plugin.js'))
+        with self.assertRaisesRegex(Invalid, 'campos desconhecidos'):
+            sources(self.root)
+
     def test_missing_dependency(self):
         self.modify(lambda m: m.update(dependencies=[{'id': 'missing', 'version': '1.0.0'}]))
         with self.assertRaisesRegex(Invalid, 'inexistente'):

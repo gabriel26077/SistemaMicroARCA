@@ -8,6 +8,9 @@
   traversal, controles, symlinks, arquivos especiais e não declarados.
 - Bloquear campos desconhecidos/hooks, IDs/versões/manifests repetidos, ciclos,
   dependências ausentes, conflitos de versões e posse de arquivos.
+- Manifestos de blocos são dados declarativos limitados a 64 KiB. JavaScript,
+  callbacks, HTML e hooks remotos não fazem parte do contrato e são rejeitados.
+  Templates geram MicroPython para o ESP32, mas nunca são executados na IDE.
 - Manter versões antigas. Lock e histórico Git e comparação remota de releases
   protegem URLs imutáveis no fluxo normal de publicação.
 - Somente mantenedor revisado. `origin` é declaração sujeita a revisão humana,

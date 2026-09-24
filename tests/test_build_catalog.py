@@ -33,6 +33,23 @@ class BuildTests(RegistryCase):
         self.assertEqual((self.root / 'dist/v1' / catalog['packages'][0]['license_url']).read_bytes(),
                          (self.directory / 'LICENSE').read_bytes())
 
+    def test_hashes_and_copies_declarative_blocks(self):
+        directory = self.add_package('alpha', '1.0.1')
+        path = self.add_blocks(directory)
+        self.lock()
+        build(self.root)
+        catalog = json.loads((self.root / 'dist/v1/catalog.json').read_bytes())
+        package = next(item for item in catalog['packages'] if item['version'] == '1.0.1')
+        blocks = package['blocks']
+        original = path.read_bytes()
+        self.assertEqual(blocks['url'], 'packages/alpha/1.0.1/blocks.json')
+        self.assertEqual(blocks['size'], len(original))
+        self.assertEqual(blocks['sha256'], hashlib.sha256(original).hexdigest())
+        self.assertEqual(
+            (self.root / 'dist/v1' / blocks['url']).read_bytes(),
+            original,
+        )
+
     def test_sort_versions_numerically(self):
         self.add_package('alpha', '1.10.0')
         self.add_package('alpha', '1.2.0')

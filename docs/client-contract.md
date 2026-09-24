@@ -35,6 +35,17 @@ Arquivos têm tamanho 0..65.536 e SHA-256 hexadecimal de 64 caracteres. São ins
 diretamente em `/lib`. `license_url` obrigatório e `provenance_url` opcional são
 metadados para exibição, não código instalado. `generated_at` é omitido.
 
+`blocks` é opcional e contém URL, tamanho e SHA-256 de `blocks.json`. Exigir
+HTTPS, mesma origem e o caminho exato
+`packages/<id>/<version>/blocks.json`, com limite de 65.536 bytes. Validar o
+manifesto contra `schemas/blocks.schema.json` e conferir que ID/versão coincidem
+com o pacote. O arquivo fica no celular e nunca é transferido ao ESP32.
+
+O manifesto de blocos é somente declarativo: rótulos, campos limitados e templates
+de uma linha para gerar MicroPython. Não aceitar JavaScript, HTML, URLs adicionais,
+callbacks ou hooks. A IDE interpreta os dados com código próprio empacotado no APK;
+nunca usa `eval` nem executa conteúdo do catálogo na WebView.
+
 Verificar placa e versão MicroPython. A versão mínima aceita apenas `>=1.N` ou
 `>=1.N.P`; não há resolvedor geral de ranges. Dependências são exatas. Resolver
 todo o fecho transitivo antes de baixar; rejeitar ausentes, ciclos, duas versões
@@ -60,6 +71,11 @@ O catálogo pode conter várias versões de um ID; apenas uma fica instalada.
    ID, versão, hashes, arquivos, dependências e origem. Contar referências de uso:
    não remover arquivo/dependência ainda usado por outro pacote; bloquear remoção
    ou apresentar plano incluindo dependentes.
+
+Blocos de biblioteca aparecem depois que o pacote completo, incluindo
+`blocks.json`, foi baixado e validado. O workspace registra os pares
+`id@versão` usados. Antes de executar, conferir o registro do ESP32 conectado e
+pedir a instalação das versões ausentes.
 
 ## Confiança
 

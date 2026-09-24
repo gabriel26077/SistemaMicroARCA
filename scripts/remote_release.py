@@ -53,6 +53,20 @@ def validate_downloads(root):
             if key in package:
                 require(package[key] == prefix + name, 'URL de metadados inválida')
                 expected.add('v1/' + package[key])
+        blocks = package.get('blocks')
+        if blocks is not None:
+            require(
+                set(blocks) == {'url', 'size', 'sha256'},
+                'metadados de blocos inválidos',
+            )
+            require(blocks['url'] == prefix + 'blocks.json', 'URL de blocos inválida')
+            name = 'v1/' + blocks['url']
+            expected.add(name)
+            data = (root / name).read_bytes()
+            require(0 < len(data) == blocks['size'] <= 65536,
+                    f'tamanho inválido: {name}')
+            require(hashlib.sha256(data).hexdigest() == blocks['sha256'],
+                    f'SHA-256 inválido: {name}')
     require(set(files(root)) == expected, 'conteúdo inesperado ou ausente no release')
 
 
