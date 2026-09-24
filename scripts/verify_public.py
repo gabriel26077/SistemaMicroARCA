@@ -39,17 +39,38 @@ def verify(endpoint, local=ROOT / 'dist'):
     require(raw == (local / 'v1/catalog.json').read_bytes(), 'catálogo público difere de dist local')
     catalog = parse_json(raw)
     count = 0
+    block_count = 0
     for package in catalog['packages']:
         for file in package['files']:
             data = fetch(urljoin(endpoint, file['url']), file['size'], 'public, max-age=31536000, immutable')
             require(len(data) == file['size'] and sha(data) == file['sha256'], f'integridade inválida: {file["url"]}')
             count += 1
+        blocks = package.get('blocks')
+        if blocks is not None:
+            data = fetch(
+                urljoin(endpoint, blocks['url']),
+                blocks['size'],
+                'public, max-age=31536000, immutable',
+            )
+            require(
+                len(data) == blocks['size'] and sha(data) == blocks['sha256'],
+                f'integridade inválida: {blocks["url"]}',
+            )
+            require(
+                data == (local / 'v1' / blocks['url']).read_bytes(),
+                f'blocos divergentes: {blocks["url"]}',
+            )
+            block_count += 1
         for key in ('license_url', 'provenance_url'):
             if key in package:
                 name = package[key]
                 data = fetch(urljoin(endpoint, name), MAX_CATALOG, 'public, max-age=31536000, immutable')
                 require(data == (local / 'v1' / name).read_bytes(), f'metadados divergentes: {name}')
-    print(f'HTTPS, catálogo, headers, licenças e {count} arquivos verificados.')
+    block_label = 'manifesto' if block_count == 1 else 'manifestos'
+    print(
+        f'HTTPS, catálogo, headers, licenças, {count} módulos e '
+        f'{block_count} {block_label} de blocos verificados.'
+    )
 
 
 def main():
