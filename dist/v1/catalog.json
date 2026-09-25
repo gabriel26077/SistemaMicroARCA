@@ -91,6 +91,41 @@
       "version": "1.1.0"
     },
     {
+      "author": "Projeto ARCA",
+      "blocks": {
+        "sha256": "38d98749281b3590aac5152245a51003db84d75b6599fff1e86104f826eaa271",
+        "size": 5604,
+        "url": "packages/oled-pintor/1.2.0/blocks.json"
+      },
+      "compatibility": {
+        "boards": [
+          "ESP32_GENERIC"
+        ],
+        "micropython": ">=1.24"
+      },
+      "dependencies": [
+        {
+          "id": "ssd1306",
+          "version": "1.0.0"
+        }
+      ],
+      "description": "Funções educacionais para desenhar em displays OLED, com blocos visuais.",
+      "files": [
+        {
+          "name": "lib_oled_pintor.py",
+          "sha256": "e178592ab39c698de1dc80fe2d4f41a321d3f51af3f907cb2bd4c7977f6d95c4",
+          "size": 3002,
+          "url": "packages/oled-pintor/1.2.0/lib_oled_pintor.py"
+        }
+      ],
+      "homepage": "",
+      "id": "oled-pintor",
+      "license": "MIT",
+      "license_url": "packages/oled-pintor/1.2.0/LICENSE",
+      "name": "Pintor OLED",
+      "version": "1.2.0"
+    },
+    {
       "author": "MicroPython contributors",
       "compatibility": {
         "boards": [

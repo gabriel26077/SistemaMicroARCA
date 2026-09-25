@@ -72,7 +72,7 @@ Schema usados neste projeto e verificações semânticas adicionais.
 
 | Pacote | Versão do catálogo | Origem | Licença |
 | --- | --- | --- | --- |
-| oled-pintor | 1.0.0, 1.1.0 | ProjetoARCA; 1.1.0 adiciona blocos declarativos | MIT |
+| oled-pintor | 1.0.0, 1.1.0, 1.2.0 | ProjetoARCA; 1.1.0 adiciona blocos declarativos; 1.2.0 adiciona ponto | MIT |
 | ssd1306 | 1.0.0 | MicroPython/micropython-lib, upstream 0.1.0 | MIT |
 | microarca-teste | 1.0.0 | Funções simples do Projeto ARCA para testar a IDE | MIT |
 
