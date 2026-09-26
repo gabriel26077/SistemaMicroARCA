@@ -46,6 +46,10 @@ de uma linha para gerar MicroPython. Não aceitar JavaScript, HTML, URLs adicion
 callbacks ou hooks. A IDE interpreta os dados com código próprio empacotado no APK;
 nunca usa `eval` nem executa conteúdo do catálogo na WebView.
 
+Campos `value` aceitam somente os tipos básicos exibíveis `String`, `Number` e
+`Boolean`; não significam um valor arbitrário nem removem a tipagem das demais
+entradas. A IDE deve usar o tipo do valor padrão para criar o bloco sombra inicial.
+
 Verificar placa e versão MicroPython. A versão mínima aceita apenas `>=1.N` ou
 `>=1.N.P`; não há resolvedor geral de ranges. Dependências são exatas. Resolver
 todo o fecho transitivo antes de baixar; rejeitar ausentes, ciclos, duas versões

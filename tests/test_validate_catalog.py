@@ -63,6 +63,19 @@ class ValidationTests(RegistryCase):
         packages, _ = sources(self.root)
         self.assertEqual(packages[0][0]['blocks'], {'source': 'blocks.json'})
 
+    def test_blocks_accept_printable_value_field(self):
+        path = self.add_blocks()
+        value = json.loads(path.read_bytes())
+        field = value['blocks'][0]['fields'][0]
+        field.update(type='value', default='Contagem: ')
+        path.write_bytes(json_bytes(value))
+        sources(self.root)
+
+        field['default'] = ['not', 'printable']
+        path.write_bytes(json_bytes(value))
+        with self.assertRaisesRegex(Invalid, 'valor exibivel'):
+            sources(self.root)
+
     def test_blocks_must_match_package_and_fields(self):
         path = self.add_blocks()
         value = json.loads(path.read_bytes())

@@ -27,6 +27,13 @@
       "lib_oled_pintor.py": "e178592ab39c698de1dc80fe2d4f41a321d3f51af3f907cb2bd4c7977f6d95c4",
       "manifest.json": "edba5cb5805fc45360b336eadc0b524cad63280909133ae8433fe7226d3753d5"
     },
+    "oled-pintor/1.3.0": {
+      "LICENSE": "eaff29fe4a2a8a132687e4fd7457d122a3957b4f9ac2c8cdbae0301041dc2670",
+      "README.md": "2a1fc2366508909a314029b17014d8165c9ab92e3cbae6601e28bd053b4344ec",
+      "blocks.json": "f666565328a099fcc2e2d917e8d95d60263a8c5c07d0ca19cf66517f2229fbde",
+      "lib_oled_pintor.py": "cc637a9347405457ff29268b5dc16f5d5db21ceae38fd05638653269baa19864",
+      "manifest.json": "fe6e3377f35171ea9a0f8493d1ce44f912efa09db6ace8d16c9fdeb2009448b8"
+    },
     "ssd1306/1.0.0": {
       "LICENSE": "d437b1535284703c81b33960ad37b8379ed681e1257d7a94c33b87577a0947ab",
       "README.md": "6b53e7a78f80b78cc4ce3ea7cfac6c020932cef5dde0d82850b6fa6d706de26c",

@@ -140,6 +140,15 @@ def validate_blocks(data, identity):
                         f'texto padrao invalido em {block_type}')
                 require('min' not in field and 'max' not in field,
                         f'limites invalidos em {block_type}')
+            elif field_type == 'value':
+                valid_default = (
+                    (type(default) is str and len(default) <= 240) or
+                    type(default) is bool or
+                    (type(default) in (int, float) and -1000000 <= default <= 1000000)
+                )
+                require(valid_default, f'valor exibivel padrao invalido em {block_type}')
+                require('min' not in field and 'max' not in field,
+                        f'limites invalidos em {block_type}')
             else:
                 require(type(default) is int and type(field.get('min')) is int and
                         type(field.get('max')) is int and

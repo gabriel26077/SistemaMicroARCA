@@ -40,7 +40,7 @@
               "type": "object",
               "properties": {
                 "name": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{0,31}$"},
-                "type": {"type": "string", "enum": ["identifier", "integer", "text"]},
+                "type": {"type": "string", "enum": ["identifier", "integer", "text", "value"]},
                 "default": {},
                 "min": {"type": "integer"},
                 "max": {"type": "integer"}
