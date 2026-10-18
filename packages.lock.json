@@ -1,6 +1,13 @@
 {
   "schema": 1,
   "versions": {
+    "buzzer-passivo/1.0.0": {
+      "LICENSE": "574ffc4c46eb303a9ba66e2104992e4e7b18ba6756a80b99e8e9a2ebcc267f27",
+      "README.md": "afa19c9f6ab2bcbd7e7e6d32432cf0f7e425c9d1575b56364253dd6d34085396",
+      "blocks.json": "82539fda0f9d99ce110b946a1c0146b42cdb3a901fa74be416a8123fa022a977",
+      "lib_buzzer_passivo.py": "c89529df9252ddc549dad0a3687c533d094e3ed62edebbbca331d642bc963f72",
+      "manifest.json": "40c2fa760bc668d75bca5d7d44061aaa698bd131de2ed195a324726adfcde338"
+    },
     "microarca-teste/1.0.0": {
       "LICENSE": "574ffc4c46eb303a9ba66e2104992e4e7b18ba6756a80b99e8e9a2ebcc267f27",
       "README.md": "54159e1faccfe570d7baae8801354ebb2e48f13da55b97c157f5920a06acd8ed",

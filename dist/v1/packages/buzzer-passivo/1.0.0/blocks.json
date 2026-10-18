@@ -1,0 +1,205 @@
+{
+  "schema": 1,
+  "package": {
+    "id": "buzzer-passivo",
+    "version": "1.0.0"
+  },
+  "category": {
+    "name": "Buzzer passivo",
+    "color": "#9C4DCC"
+  },
+  "blocks": [
+    {
+      "type": "buzzer_passivo_criar",
+      "name": "Criar buzzer",
+      "description": "Prepara um buzzer passivo em um pino de saída.",
+      "label": "criar buzzer {BUZZER} no pino {PINO}",
+      "fields": [
+        {
+          "name": "BUZZER",
+          "type": "identifier",
+          "default": "buzzer"
+        },
+        {
+          "name": "PINO",
+          "type": "integer",
+          "default": 25,
+          "min": 0,
+          "max": 33
+        }
+      ],
+      "python": {
+        "imports": [
+          "from lib_buzzer_passivo import criar_buzzer"
+        ],
+        "template": "{BUZZER} = criar_buzzer({PINO})\n"
+      }
+    },
+    {
+      "type": "buzzer_passivo_nota",
+      "name": "Tocar nota e aguardar",
+      "description": "Toca uma nota e aguarda sua duração antes de continuar.",
+      "label": "no buzzer {BUZZER} tocar {NOTA} oitava {OITAVA} por {DURACAO} ms e aguardar",
+      "fields": [
+        {
+          "name": "BUZZER",
+          "type": "identifier",
+          "default": "buzzer"
+        },
+        {
+          "name": "NOTA",
+          "type": "dropdown",
+          "default": "A",
+          "options": [
+            [
+              "Dó",
+              "C"
+            ],
+            [
+              "Dó#",
+              "C#"
+            ],
+            [
+              "Ré",
+              "D"
+            ],
+            [
+              "Ré#",
+              "D#"
+            ],
+            [
+              "Mi",
+              "E"
+            ],
+            [
+              "Fá",
+              "F"
+            ],
+            [
+              "Fá#",
+              "F#"
+            ],
+            [
+              "Sol",
+              "G"
+            ],
+            [
+              "Sol#",
+              "G#"
+            ],
+            [
+              "Lá",
+              "A"
+            ],
+            [
+              "Lá#",
+              "A#"
+            ],
+            [
+              "Si",
+              "B"
+            ]
+          ]
+        },
+        {
+          "name": "OITAVA",
+          "type": "integer",
+          "default": 4,
+          "min": 0,
+          "max": 8
+        },
+        {
+          "name": "DURACAO",
+          "type": "integer",
+          "default": 500,
+          "min": 0,
+          "max": 60000
+        }
+      ],
+      "python": {
+        "imports": [
+          "from lib_buzzer_passivo import criar_buzzer"
+        ],
+        "template": "{BUZZER}.tocar_nota({NOTA}, {OITAVA}, {DURACAO})\n"
+      }
+    },
+    {
+      "type": "buzzer_passivo_frequencia",
+      "name": "Tocar frequência e aguardar",
+      "description": "Toca a frequência em Hz e aguarda sua duração.",
+      "label": "no buzzer {BUZZER} tocar {FREQUENCIA} Hz por {DURACAO} ms e aguardar",
+      "fields": [
+        {
+          "name": "BUZZER",
+          "type": "identifier",
+          "default": "buzzer"
+        },
+        {
+          "name": "FREQUENCIA",
+          "type": "integer",
+          "default": 440,
+          "min": 1,
+          "max": 20000
+        },
+        {
+          "name": "DURACAO",
+          "type": "integer",
+          "default": 500,
+          "min": 0,
+          "max": 60000
+        }
+      ],
+      "python": {
+        "imports": [
+          "from lib_buzzer_passivo import criar_buzzer"
+        ],
+        "template": "{BUZZER}.tocar({FREQUENCIA}, {DURACAO})\n"
+      }
+    },
+    {
+      "type": "buzzer_passivo_iniciar",
+      "name": "Iniciar som contínuo",
+      "description": "Inicia o som e continua imediatamente o programa. Use Parar som para silenciar.",
+      "label": "no buzzer {BUZZER} iniciar som em {FREQUENCIA} Hz",
+      "fields": [
+        {
+          "name": "BUZZER",
+          "type": "identifier",
+          "default": "buzzer"
+        },
+        {
+          "name": "FREQUENCIA",
+          "type": "integer",
+          "default": 440,
+          "min": 1,
+          "max": 20000
+        }
+      ],
+      "python": {
+        "imports": [
+          "from lib_buzzer_passivo import criar_buzzer"
+        ],
+        "template": "{BUZZER}.iniciar({FREQUENCIA})\n"
+      }
+    },
+    {
+      "type": "buzzer_passivo_parar",
+      "name": "Parar som",
+      "description": "Silencia o buzzer e libera seu canal PWM.",
+      "label": "parar som do buzzer {BUZZER}",
+      "fields": [
+        {
+          "name": "BUZZER",
+          "type": "identifier",
+          "default": "buzzer"
+        }
+      ],
+      "python": {
+        "imports": [
+          "from lib_buzzer_passivo import criar_buzzer"
+        ],
+        "template": "{BUZZER}.parar()\n"
+      }
+    }
+  ]
+}

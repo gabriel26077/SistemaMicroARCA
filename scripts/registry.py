@@ -128,7 +128,22 @@ def validate_blocks(data, identity):
                 f'label diverge dos campos em {block_type}')
         for field in fields:
             field_type, default = field['type'], field['default']
-            if field_type == 'identifier':
+            require(field_type == 'dropdown' or 'options' not in field,
+                    f'opcoes so permitidas em seletor: {block_type}')
+            if field_type == 'dropdown':
+                options = field.get('options')
+                require(type(options) is list and 1 <= len(options) <= 32,
+                        f'opcoes invalidas em {block_type}')
+                require(all(type(pair) is list and len(pair) == 2 and
+                            all(type(item) is str and 1 <= len(item) <= 64 for item in pair)
+                            for pair in options), f'opcao invalida em {block_type}')
+                values = [pair[1] for pair in options]
+                require(type(default) is str and default in values and
+                        len(values) == len(set(values)),
+                        f'padrao ou valores invalidos em {block_type}')
+                require('min' not in field and 'max' not in field,
+                        f'limites invalidos em {block_type}')
+            elif field_type == 'identifier':
                 require(type(default) is str and
                         re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*', default, re.ASCII) and
                         not keyword.iskeyword(default),

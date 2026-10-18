@@ -72,8 +72,9 @@ Schema usados neste projeto e verificações semânticas adicionais.
 
 | Pacote | Versão do catálogo | Origem | Licença |
 | --- | --- | --- | --- |
-| oled-pintor | 1.0.0, 1.1.0, 1.2.0 | ProjetoARCA; 1.1.0 adiciona blocos declarativos; 1.2.0 adiciona ponto | MIT |
+| oled-pintor | 1.0.0, 1.1.0, 1.2.0, 1.3.0 | ProjetoARCA; 1.1.0 adiciona blocos declarativos; 1.2.0 adiciona ponto; 1.3.0 aceita valores exibíveis | MIT |
 | ssd1306 | 1.0.0 | MicroPython/micropython-lib, upstream 0.1.0 | MIT |
+| buzzer-passivo | 1.0.0 | Projeto ARCA; notas, frequências e blocos com seletor | MIT |
 | microarca-teste | 1.0.0 | Funções simples do Projeto ARCA para testar a IDE | MIT |
 
 `microarca-teste` não tem dependências nem acesso a hardware. Instala
@@ -85,6 +86,12 @@ Schema usados neste projeto e verificações semânticas adicionais.
 ESP32_GENERIC; ensaio físico com ESP32/OLED ainda é necessário.
 Proveniência: [OLED](packages/oled-pintor/1.0.0/README.md) e
 [SSD1306](packages/ssd1306/1.0.0/README.md). Licenças também acompanham `dist/`.
+
+O pacote [buzzer-passivo](packages/buzzer-passivo/1.0.0/README.md) oferece
+notas com oitava, frequências e som contínuo. Seus blocos exigem app com suporte
+ao campo declarativo dropdown. O runtime oferece o hook opcional __arca_cleanup__
+para liberar os canais PWM no encerramento do programa.
+A versão está preparada em dist/; a publicação remota é uma etapa separada.
 
 ## Publicação
 

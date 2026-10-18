@@ -76,6 +76,27 @@ class ValidationTests(RegistryCase):
         with self.assertRaisesRegex(Invalid, 'valor exibivel'):
             sources(self.root)
 
+    def test_dropdown_options_are_validated(self):
+        path = self.add_blocks()
+        value = json.loads(path.read_bytes())
+        field = value['blocks'][0]['fields'][0]
+        field.clear()
+        field.update(name='TELA', type='dropdown', default='A', options=[['Do', 'C'], ['La', 'A']])
+        # Preserve the original field name used by the fixture's label/template.
+        original = json.loads((self.add_blocks()).read_bytes())
+        field['name'] = original['blocks'][0]['fields'][0]['name']
+        path.write_bytes(json_bytes(value))
+        sources(self.root)
+        for change in ({'default': 'B'}, {'options': []},
+                       {'options': [['Do', 'C'], ['Other', 'C']]},
+                       {'options': [['Do', 1]]}, {'min': 0},
+                       {'type': 'text'}):
+            invalid = json.loads(json.dumps(value))
+            invalid['blocks'][0]['fields'][0].update(change)
+            path.write_bytes(json_bytes(invalid))
+            with self.subTest(change=change), self.assertRaises(Invalid):
+                sources(self.root)
+
     def test_blocks_must_match_package_and_fields(self):
         path = self.add_blocks()
         value = json.loads(path.read_bytes())

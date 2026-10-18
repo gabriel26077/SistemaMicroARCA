@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "id": "buzzer-passivo",
+  "name": "Buzzer passivo",
+  "version": "1.0.0",
+  "description": "Notas musicais e frequências em buzzer passivo, com blocos visuais.",
+  "author": "Projeto ARCA",
+  "license": "MIT",
+  "homepage": "",
+  "origin": "first-party",
+  "compatibility": {
+    "micropython": ">=1.24",
+    "boards": [
+      "ESP32_GENERIC"
+    ]
+  },
+  "dependencies": [],
+  "blocks": {
+    "source": "blocks.json"
+  },
+  "files": [
+    {
+      "source": "lib_buzzer_passivo.py",
+      "install_as": "lib_buzzer_passivo.py"
+    }
+  ]
+}

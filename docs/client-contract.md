@@ -91,3 +91,13 @@ SHA-256 detecta corrupção/inconsistência, não comprometimento simultâneo de
 e catálogo. Evolução futura: assinatura Ed25519 com chave privada fora da VPS e
 chave pública embutida no app, incluindo rotação, revogação e proteção anti-replay.
 Esta versão não implementa nem simula assinaturas. HTTPS não impede replay sozinho.
+
+## Seletores declarativos de bibliotecas
+
+Um campo de bloco pode usar type dropdown, default string e options com
+1 a 32 pares [rótulo, valor]. Cada string tem 1 a 64 caracteres; os valores
+são únicos e o padrão precisa estar nas opções. min/max não são permitidos.
+O app deve gerar o valor selecionado como literal string Python escapado,
+nunca como código. Tipos de campo anteriores não aceitam options.
+Apps sem esse suporte rejeitam o manifesto; atualizar o app antes de usar
+os blocos do pacote buzzer-passivo.

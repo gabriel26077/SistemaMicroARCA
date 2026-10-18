@@ -2,6 +2,36 @@
   "packages": [
     {
       "author": "Projeto ARCA",
+      "blocks": {
+        "sha256": "82539fda0f9d99ce110b946a1c0146b42cdb3a901fa74be416a8123fa022a977",
+        "size": 4757,
+        "url": "packages/buzzer-passivo/1.0.0/blocks.json"
+      },
+      "compatibility": {
+        "boards": [
+          "ESP32_GENERIC"
+        ],
+        "micropython": ">=1.24"
+      },
+      "dependencies": [],
+      "description": "Notas musicais e frequências em buzzer passivo, com blocos visuais.",
+      "files": [
+        {
+          "name": "lib_buzzer_passivo.py",
+          "sha256": "c89529df9252ddc549dad0a3687c533d094e3ed62edebbbca331d642bc963f72",
+          "size": 3915,
+          "url": "packages/buzzer-passivo/1.0.0/lib_buzzer_passivo.py"
+        }
+      ],
+      "homepage": "",
+      "id": "buzzer-passivo",
+      "license": "MIT",
+      "license_url": "packages/buzzer-passivo/1.0.0/LICENSE",
+      "name": "Buzzer passivo",
+      "version": "1.0.0"
+    },
+    {
+      "author": "Projeto ARCA",
       "compatibility": {
         "boards": [
           "ESP32_GENERIC"
