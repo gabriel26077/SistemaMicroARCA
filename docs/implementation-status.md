@@ -1,5 +1,7 @@
 # Relatório de publicação MicroARCA
 
+> Apresentação pública: endereços e caminhos de infraestrutura neste documento foram generalizados. São exemplos, não instruções para copiar diretamente para um servidor. Os scripts mantêm sua configuração operacional; os registros históricos de implantação não foram reescritos.
+
 **Atualização em 23/09/2026 às 17:10 UTC:** `microarca-teste@1.0.0` publicado,
 release ativo `4f7454ef3afa48f0414d0184379d8a442703af1f`. Foi observado no catálogo
 público 8,307 s após iniciar o deploy, sem reiniciar containers.
@@ -11,7 +13,8 @@ Publicado e verificado em 23/09/2026 às 03:05 UTC (00:05 em São Paulo).
 **Endpoint público:** https://libs-microarca.traceedu.com.br/v1/catalog.json
 
 **Release do primeiro provisionamento:** `0e4bff12fad2829c2f4ebf8b162e1b43aa8d10f6`.
-GitHub: `gabriel26077/SistemaMicroARCA`, privado, branch `main`.
+GitHub: `gabriel26077/SistemaMicroARCA`, branch `main`. O código foi aberto em
+26/11/2026; a descrição do provisionamento abaixo é histórica.
 
 ## Implementado
 
@@ -22,8 +25,9 @@ verificação de integridade e troca atômica de `current`; documentação do cl
 segurança, publicação, migração e rollback. Sem backend, banco ou hooks.
 
 Estrutura: `packages/`, `packages.lock.json`, `schemas/`, `scripts/`, `tests/`,
-`dist/v1/`, `deploy/`, `docs/`, `.github/workflows/`. O Git é privado; somente
-`dist/` é distribuído publicamente. Não foram identificados segredos na revisão.
+`dist/v1/`, `deploy/`, `docs/`, `.github/workflows/`. Na implantação original,
+somente `dist/` era público; o repositório foi aberto posteriormente.
+Não foram identificados segredos na revisão.
 
 ## Pacotes publicados e proveniência
 
@@ -76,18 +80,18 @@ O usuário substituiu o hostname inicial de dois níveis por
 `libs-microarca.traceedu.com.br`, CNAME para `traceedu.com.br`. O proxy resolve
 para redes Cloudflare. O deploy valida essas redes pela API pública oficial e
 compara com o destino aprovado; a verificação pública comprova os bytes servidos.
-A VPS de origem permanece em `2.25.196.49`. Nenhum DNS foi alterado pelo agente.
+A VPS de origem permanece em `<IP_DA_VPS>`. Nenhum DNS foi alterado pelo agente.
 
-Apenas `/var/www/MicroARCA-libs` e seus releases foram criados para o catálogo.
+Apenas `/srv/catalogo-microarca` e seus releases foram criados para o catálogo.
 Os dois arquivos de infraestrutura receberam somente o diff aprovado:
 
-- `/var/www/TraceEdu/docker-compose.prod.yml`: montagem do pai no Caddy como `ro`.
-- `/var/www/TraceEdu/Caddyfile.domains`: host do catálogo e headers estáticos.
+- `/srv/servico-existente/docker-compose.prod.yml`: montagem do pai no Caddy como `ro`.
+- `/srv/servico-existente/Caddyfile.domains`: host do catálogo e headers estáticos.
 
 Backups preservados:
 
-- `/var/www/TraceEdu/docker-compose.prod.yml.bak-microarca-20260923T023344651705Z`
-- `/var/www/TraceEdu/Caddyfile.domains.bak-microarca-20260923T023344651705Z`
+- `/srv/servico-existente/docker-compose.prod.yml.bak-microarca-20260923T023344651705Z`
+- `/srv/servico-existente/Caddyfile.domains.bak-microarca-20260923T023344651705Z`
 
 Somente `traceedu-caddy` foi recriado, às 02:56:20 UTC. Nenhum backend, frontend
 ou PostgreSQL reiniciou: os seis containers mantiveram IDs, StartedAt e contadores
@@ -117,7 +121,8 @@ Commits enviados incluem `c8bf161` (schemas/bibliotecas), `e679c13` (build),
 posterior do identificador do verificador e este relatório não alteram dist;
 a publicação continua vinculada ao release acima. Consultar `git log` para os
 commits de documentação/verificação posteriores. O repositório foi tornado
-privado conforme a especificação e os pushes foram autorizados pelo usuário.
+privado conforme a especificação original e foi aberto em 26/11/2026.
+Os pushes foram autorizados pelo usuário.
 
 É o primeiro release real, portanto não existe release anterior de produção.
 Rollback por troca de symlink foi testado localmente com duas releases; rollback

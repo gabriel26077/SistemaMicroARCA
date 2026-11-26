@@ -1,3 +1,10 @@
+# Especificação histórica do catálogo
+
+Este documento preserva as instruções de criação do projeto, quando o repositório
+era privado. O código foi aberto em 26/11/2026. Consulte o README para o estado atual.
+
+> Apresentação pública: endereços e caminhos de infraestrutura neste documento foram generalizados. São exemplos, não instruções para copiar diretamente para um servidor. Os scripts mantêm sua configuração operacional; os registros históricos de implantação não foram reescritos.
+
 Você está dentro de um novo repositório Git privado destinado ao catálogo oficial de bibliotecas do MicroARCA.
 
 ATUALIZAÇÃO DO USUÁRIO (22/09/2026): o endpoint passa a ser
@@ -316,7 +323,7 @@ Ele deve:
 
 Estrutura remota desejada:
 
-/var/www/MicroARCA-libs/
+/srv/catalogo-microarca/
 ├── releases/
 │   ├── <commit-1>/
 │   └── <commit-2>/
@@ -324,7 +331,7 @@ Estrutura remota desejada:
 
 O diretório pai deve ser montado no Caddy como somente leitura:
 
-/var/www/MicroARCA-libs:/srv/microarca-libs:ro
+/srv/catalogo-microarca:/srv/microarca-libs:ro
 
 Assim o Caddy serve:
 
@@ -366,14 +373,14 @@ O Caddy atual ocupa as portas 80 e 443.
 Projetos Compose:
 
 - Produção:
-  - `/var/www/TraceEdu/docker-compose.yml`
-  - `/var/www/TraceEdu/docker-compose.prod.yml`
+  - `/srv/servico-existente/docker-compose.yml`
+  - `/srv/servico-existente/docker-compose.prod.yml`
 - Staging:
-  - `/var/www/TraceEdu-dev/docker-compose.staging.yml`
+  - `/srv/servico-existente-dev/docker-compose.staging.yml`
 
 Configuração Caddy:
 
-- Host: `/var/www/TraceEdu/Caddyfile.domains`
+- Host: `/srv/servico-existente/Caddyfile.domains`
 - Container: `/etc/caddy/Caddyfile`
 - Montagem atual: somente leitura.
 
@@ -444,7 +451,7 @@ Antes de qualquer alteração:
 
 Se autorizado:
 
-- Crie apenas `/var/www/MicroARCA-libs`.
+- Crie apenas `/srv/catalogo-microarca`.
 - Acrescente a montagem somente leitura ao serviço Caddy.
 - Acrescente o host do MicroARCA ao Caddyfile.
 - Valide a configuração antes de recarregar.

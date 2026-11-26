@@ -1,6 +1,8 @@
 # Publicação e imutabilidade
 
-Git privado guarda fontes e revisão; `dist/` contém material público. Não incluir
+> Apresentação pública: endereços e caminhos de infraestrutura neste documento foram generalizados. São exemplos, não instruções para copiar diretamente para um servidor. Os scripts mantêm sua configuração operacional; os registros históricos de implantação não foram reescritos.
+
+Git guarda fontes e revisão; o repositório é público e `dist/` contém a distribuição. Não incluir
 senhas, chaves, `.env`, dumps ou dados pessoais. Não há push/publicação automática.
 GitHub Actions apenas valida após push autorizado; não exige secrets nem acesso SSH.
 
@@ -54,7 +56,7 @@ O trap limpa apenas incoming/link temporário e lock da própria execução. Que
 conexão/processo pode deixar lock: conferir token e ausência de deploy ativo antes
 de remover manualmente. Não automatizar limpeza de releases nesta fase.
 
-`/var/www/MicroARCA-libs/releases` deve existir previamente. Deploy não provisiona
+`/srv/catalogo-microarca/releases` deve existir previamente. Deploy não provisiona
 nem reinicia serviços; primeiro provisionamento exige aprovação em `deploy/README.md`.
 No primeiro provisionamento, `--bootstrap --cloudflare` permite preparar/ativar o release completo
 antes de habilitar o host Caddy, adiando apenas a checagem pública HTTPS. DNS continua

@@ -5,9 +5,12 @@ sem backend, banco, autenticação ou execução de Python no servidor web.
 Endpoint publicado: [catalog.json](https://libs-microarca.traceedu.com.br/v1/catalog.json).
 Consulte [o estado da implantação](docs/implementation-status.md) antes de usá-lo.
 
-**O repositório é privado; os arquivos publicados são públicos.** Bibliotecas
+**O código-fonte do catálogo é público e está sob a [licença MIT](LICENSE).** Bibliotecas
 executam código no ESP32. Nesta fase, somente bibliotecas revisadas pelo mantenedor
 são aceitas. Não há upload de terceiros nem hooks de instalação.
+
+O aplicativo está em [MicroARCA](https://github.com/gabriel26077/MicroARCA).
+Fotos, exemplos e vídeos estão em [MicroARCA — demonstrações](https://github.com/gabriel26077/MicroARCA-demonstracoes).
 
 ## Uso local
 

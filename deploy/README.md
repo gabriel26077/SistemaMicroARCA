@@ -1,5 +1,7 @@
 # Operação do catálogo estático
 
+> Apresentação pública: endereços e caminhos de infraestrutura neste documento foram generalizados. São exemplos, não instruções para copiar diretamente para um servidor. Os scripts mantêm sua configuração operacional; os registros históricos de implantação não foram reescritos.
+
 **Publicado: `https://libs-microarca.traceedu.com.br/v1/catalog.json`, via Cloudflare.**
 O usuário criou um CNAME para `traceedu.com.br` e aprovou o diff de Caddy/Compose.
 Release atual: `4f7454ef3afa48f0414d0184379d8a442703af1f`, incluindo `microarca-teste`.
@@ -21,7 +23,7 @@ coberto pelo Universal SSL da Cloudflare. Configuração informada na zona
 
 Inspeção em 2026-09-23 02:24 UTC: o novo nome e `traceedu.com.br` resolvem para
 `104.21.74.162`, `172.67.204.66` e IPv6 da Cloudflare, indicando proxy ativo.
-O IPv4 da VPS continua `2.25.196.49`; não deve ser confundido com os IPs do proxy.
+O IPv4 da VPS continua `<IP_DA_VPS>`; não deve ser confundido com os IPs do proxy.
 A resposta pública inicial foi HTTP 525; após habilitar o host no Caddy e emitir
 o certificado Let’s Encrypt, passou a HTTP 200. Não alterar DNS dos hosts existentes.
 
@@ -53,10 +55,10 @@ os componentes internos. Guardar a evidência de StartedAt para comparação fin
 
 Arquivos relevantes:
 
-- `/var/www/TraceEdu/docker-compose.yml` — ler, sem alteração.
-- `/var/www/TraceEdu/docker-compose.prod.yml` — adicionar só a montagem no Caddy.
-- `/var/www/TraceEdu/Caddyfile.domains` — acrescentar só o snippet do catálogo.
-- `/var/www/TraceEdu-dev/docker-compose.staging.yml` — ler, sem alteração.
+- `/srv/servico-existente/docker-compose.yml` — ler, sem alteração.
+- `/srv/servico-existente/docker-compose.prod.yml` — adicionar só a montagem no Caddy.
+- `/srv/servico-existente/Caddyfile.domains` — acrescentar só o snippet do catálogo.
+- `/srv/servico-existente-dev/docker-compose.staging.yml` — ler, sem alteração.
 
 Menor mudança de Compose, no serviço `caddy`, sob `volumes`:
 
@@ -65,7 +67,7 @@ dos arquivos reais da VPS e aplicado após aprovação. Ele representa a diferen
 exata em relação aos backups registrados, não um patch a reaplicar.
 
 ```yaml
-      - /var/www/MicroARCA-libs:/srv/microarca-libs:ro
+      - /srv/catalogo-microarca:/srv/microarca-libs:ro
 ```
 
 Montar o **diretório pai**, mantendo os symlinks relativos dentro dele. Montar
@@ -79,7 +81,7 @@ gerar o diff contra os arquivos lidos novamente. Exemplo **para a fase aprovada 
 preparação**, não executado nesta implementação:
 
 ```bash
-ssh vps 'stamp=$(date -u +%Y%m%dT%H%M%SZ); cp -a /var/www/TraceEdu/Caddyfile.domains /var/www/TraceEdu/Caddyfile.domains.bak-$stamp; cp -a /var/www/TraceEdu/docker-compose.prod.yml /var/www/TraceEdu/docker-compose.prod.yml.bak-$stamp'
+ssh vps 'stamp=$(date -u +%Y%m%dT%H%M%SZ); cp -a /srv/servico-existente/Caddyfile.domains /srv/servico-existente/Caddyfile.domains.bak-$stamp; cp -a /srv/servico-existente/docker-compose.prod.yml /srv/servico-existente/docker-compose.prod.yml.bak-$stamp'
 ```
 
 Mostrar o diff exato e caminhos dos backups; pedir **uma confirmação** para aplicar
@@ -96,7 +98,7 @@ os hashes aprovados e somente Caddy foi recriado. Evidências finais em
 
 ## Após autorização e DNS correto
 
-1. Criar apenas `/var/www/MicroARCA-libs` e seus subdiretórios `releases/`, com
+1. Criar apenas `/srv/catalogo-microarca` e seus subdiretórios `releases/`, com
    permissões de leitura para Caddy. Não alterar donos/permissões do TraceEdu.
 2. Preparar o primeiro release completo antes de habilitar o host usando
    `bash scripts/deploy.sh --bootstrap --cloudflare`. Esse modo exige DNS correto, testes,
@@ -109,7 +111,7 @@ os hashes aprovados e somente Caddy foi recriado. Evidências finais em
 
 ```bash
 ssh vps 'docker exec traceedu-caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile'
-ssh vps 'cd /var/www/TraceEdu && CADDY_CONFIG_FILE=Caddyfile.domains docker compose -f docker-compose.yml -f docker-compose.prod.yml config --quiet'
+ssh vps 'cd /srv/servico-existente && CADDY_CONFIG_FILE=Caddyfile.domains docker compose -f docker-compose.yml -f docker-compose.prod.yml config --quiet'
 ```
 
 Se o arquivo montado não refletir a proposta (por troca de inode), validar a
@@ -121,7 +123,7 @@ Não iniciar esse container como servidor; executar somente `caddy validate`.
    parâmetros de projeto/arquivos Compose dos labels do container existente.
 
 ```bash
-ssh vps 'cd /var/www/TraceEdu && CADDY_CONFIG_FILE=Caddyfile.domains docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --no-deps --force-recreate caddy'
+ssh vps 'cd /srv/servico-existente && CADDY_CONFIG_FILE=Caddyfile.domains docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --no-deps --force-recreate caddy'
 ```
 
 Em futuras mudanças apenas de configuração, usar `caddy reload` após validação.

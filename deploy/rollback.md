@@ -1,5 +1,7 @@
 # Rollback
 
+> Apresentação pública: endereços e caminhos de infraestrutura neste documento foram generalizados. São exemplos, não instruções para copiar diretamente para um servidor. Os scripts mantêm sua configuração operacional; os registros históricos de implantação não foram reescritos.
+
 ## Somente catálogo
 
 Release atual: `4f7454ef3afa48f0414d0184379d8a442703af1f`.
@@ -13,7 +15,7 @@ integridade e garantir que não há deploy concorrente (`.deploy-lock`). Criar o
 symlink temporário no mesmo diretório e substituí-lo atomicamente:
 
 ```bash
-ssh vps 'cd /var/www/MicroARCA-libs && test ! -e .deploy-lock && test -d releases/COMMIT_ANTERIOR && ln -s releases/COMMIT_ANTERIOR .current-rollback && mv -Tf .current-rollback current'
+ssh vps 'cd /srv/catalogo-microarca && test ! -e .deploy-lock && test -d releases/COMMIT_ANTERIOR && ln -s releases/COMMIT_ANTERIOR .current-rollback && mv -Tf .current-rollback current'
 ```
 
 Substituir `COMMIT_ANTERIOR` pelo hash real de 40 caracteres. A checagem do lock
@@ -46,5 +48,5 @@ Se for necessário desfazer host/montagem:
 5. Repetir HTTPS dos cinco domínios TraceEdu, estados e StartedAt dos containers.
    Nenhum backend, frontend ou banco deve ter reiniciado.
 
-Não remover `/var/www/MicroARCA-libs` nem releases no primeiro rollback.
+Não remover `/srv/catalogo-microarca` nem releases no primeiro rollback.
 Não executar `docker compose down`, apagar volumes/imagens ou usar prune.

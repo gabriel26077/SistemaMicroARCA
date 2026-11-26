@@ -15,7 +15,7 @@
   protegem URLs imutáveis no fluxo normal de publicação.
 - Somente mantenedor revisado. `origin` é declaração sujeita a revisão humana,
   não comprovação automática de autoria/licença.
-- Licenças/proveniência são públicas também. Git privado não protege `dist/`.
+- Licenças e proveniência são públicas também; a distribuição não contém segredos.
 - CI somente leitura, sem secrets/deploy. Chave SSH fica fora do repositório.
   Alias `vps` deve estar configurado; não desabilitar verificação de host SSH.
 - Caddy serve arquivos sem browse, com `nosniff`, CORS e HTTPS. Catálogo `no-cache`;
