@@ -10,7 +10,7 @@ executam código no ESP32. Nesta fase, somente bibliotecas revisadas pelo manten
 são aceitas. Não há upload de terceiros nem hooks de instalação.
 
 O aplicativo está em [MicroARCA](https://github.com/gabriel26077/MicroARCA).
-Fotos, exemplos e vídeos estão em [MicroARCA — demonstrações](https://github.com/gabriel26077/MicroARCA-demonstracoes).
+Fotos, exemplos e vídeos estão no [material de demonstração do MicroARCA](https://github.com/gabriel26077/MicroARCA/tree/main/demonstracoes).
 
 ## Uso local
 
